@@ -1,5 +1,3 @@
-'use client'
-
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { Toaster } from "react-hot-toast";
