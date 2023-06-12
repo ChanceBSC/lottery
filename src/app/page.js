@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { ethers } from "ethers";
+import Countdown from "react-countdown";
 
 import {
   useDisconnect,
@@ -242,6 +243,44 @@ export default function Home() {
     setUserTickets(noOfUserTickets);
   }, [tickets, address]);
 
+  const renderer = ({ hours, minutes, seconds, completed }) => {
+    if(completed) {
+      // return <span>00:00:00</span>
+      return (
+        <>
+          <div className="text-4xl md:text-6xl font-semibold">
+            {" "}
+            Ticket Sales are CLOSED for this draw{" "}
+          </div>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <div className="text-4xl md:text-6xl font-semibold">
+            {" "}
+            Get your tickets now!{" "}
+          </div>
+          <div className="flex my-8 text-4xl md:text-6xl font-semibold">
+            <div className="flex">
+              <div className="violet-txt">{hours}</div>
+              <div>h</div>
+            </div>
+            <div className="flex ml-6">
+              <div className="violet-txt">{minutes}</div>
+              <div>m</div>
+            </div>
+            <div className="flex ml-6">
+              <div className="violet-txt">{seconds}</div>
+              <div>min</div>
+            </div>
+          </div>
+          <div className="text-xl">Until the draw</div>
+        </>
+      );
+    }
+  }
+
   return (
     <main className=" min-h-screen overflow-y-scroll w-full overflow-x-hidden relative">
       <div className="decoration-1 " />
@@ -348,7 +387,7 @@ export default function Home() {
           onClick={handleClick}
           disabled={!address}
           className=" text-2xl my-24 px-14 py-2 rounded-3xl border-buy ">
-          Buy Tickets
+          {address ? "Buy Tickets" : "Connect Wallet to Buy Ticket"}
         </button>
       </div>
 
@@ -402,7 +441,8 @@ export default function Home() {
       </div>
 
       <div className="flex flex-col items-center mt-24 ">
-        <div className="text-4xl md:text-6xl font-semibold">
+        <Countdown date={new Date(expiration * 1000)} renderer={renderer} />
+        {/* <div className="text-4xl md:text-6xl font-semibold">
           {" "}
           Get your tickets now!{" "}
         </div>
@@ -420,7 +460,7 @@ export default function Home() {
             <div>min</div>
           </div>
         </div>
-        <div className="text-xl">Until the draw</div>
+        <div className="text-xl">Until the draw</div> */}
 
         <div className=" mx-12 md:mx-24 border-bg  p-3 mt-16 md:w-1/2">
           <div className="flex flex-col  ">
@@ -450,6 +490,7 @@ export default function Home() {
               {/* <div className="mt-8 text-lg"> 20,554 stars</div> */}
               <input
                 type="number"
+                disabled={!address}
                 className="bg-gray-600 rounded-lg px-2 placeholder-white outline-none py-1 mt-8"
                 // placeholder="Input ticket count"
                 min={1}
@@ -472,10 +513,12 @@ export default function Home() {
                     disabled={
                       expiration?.toString() < Date.now().toString() ||
                       remainingTickets?.toNumber() == 0 ||
-                      userTickets == 10
+                      userTickets == 10 ||
+                      !address
                     }
                     className=" text-2xl my-8 px-14 py-2 rounded-3xl border-buy">
-                    Buy {quantity} Tickets
+                    {/* Buy {quantity} Tickets */}
+                    {address ? `Buy ${quantity} Tickets` : "Connect Wallet to Buy Ticket"}
                   </button>
                 </>
               )}
