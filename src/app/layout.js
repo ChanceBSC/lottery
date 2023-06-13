@@ -3,6 +3,7 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { Toaster } from "react-hot-toast";
+import { Metadata } from "next";
 
 import { ThirdwebProvider } from "@thirdweb-dev/react";
 

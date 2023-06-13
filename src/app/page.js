@@ -273,7 +273,7 @@ export default function Home() {
       // return <span>00:00:00</span>
       return (
         <>
-          <div className="text-4xl md:text-6xl font-semibold">
+          <div className="text-4xl md:text-6xl font-semibold mx-12 text-center">
             {" "}
             Ticket Sales are CLOSED for this draw{" "}
           </div>
@@ -307,72 +307,17 @@ export default function Home() {
   };
 
   return (
-    <main className=" min-h-screen overflow-y-scroll w-full overflow-x-hidden relative">
+    <main className=" min-h-screen w-full overflow-x-hidden relative">
       <div className="decoration-1 " />
       <div className="decoration-2 " />
-      <div className="decoration-3 " />
+      {/* <div className="decoration-3 " /> */}
       <div className="decoration-4 " />
       <div className="decoration-5 " />
-      <div className="decoration-6 " />
-      {isMenuOpen ? (
-        <div className="relative">
-          {/* <div className="absolute w-full bg-gray-900 z-50 px-3 pb-3">
-            <Image
-              onClick={() => setMenu((value) => (value = false))}
-              src="/cross.svg"
-              className="ml-auto mr-2 mt-3 cursor-pointer "
-              alt=""
-              width="20"
-              height="20"></Image>
-            <div className="flex flex-col gap-2">
-              <div className="flex gap-2">
-                <div>Trade</div>
-                <Image
-                  src="arrow-down.svg"
-                  alt=""
-                  width="10"
-                  height="5"></Image>
-              </div>
-              <div className="flex gap-2">
-                <div>Earn</div>
-                <Image
-                  src="arrow-down.svg"
-                  alt=""
-                  width="10"
-                  height="5"></Image>
-              </div>
-              <div className="flex gap-2">
-                <div>Win</div>
-                <Image
-                  src="arrow-down.svg"
-                  alt=""
-                  width="10"
-                  height="5"></Image>
-              </div>
-            </div>
-          </div> */}
-        </div>
-      ) : (
-        <div></div>
-      )}
+      {/* <div className="decoration-6 " /> */}
 
       <div className=" md:px-24 py-4 flex justify-between border-b-2">
-        <div className="flex gap-8">
-          {/* <Image src="/logo.svg" alt='' width="142" height="47"></Image>
-          <button className='flex items-center gap-2.5 invisible md:visible'>
-            <div>Trade</div>
-            <Image src="arrow-down.svg" alt="" width="10" height="5"></Image>
-          </button>
-          <button className='flex items-center gap-2.5 invisible md:visible'>
-            <div>Earn</div>
-            <Image src="arrow-down.svg" alt="" width="10" height="5"></Image>
-          </button>
-          <button className='flex items-center gap-2.5 invisible md:visible'>
-            <div>Win</div>
-            <Image src="arrow-down.svg" alt="" width="10" height="5"></Image>
-          </button> */}
-        </div>
-        <div className="flex gap-4 invisible md:visible">
+        <div></div>
+        <div className="flex gap-4 ">
           <Image src="wallet-icon.svg" alt="" width="40" height="32"></Image>
           {connectionStatus === "disconnected" ? (
             <>
@@ -392,13 +337,6 @@ export default function Home() {
             </>
           )}
         </div>
-        <Image
-          onClick={() => setMenu((value) => (value = true))}
-          className="absolute cursor-pointer float-right right-4 top-6 visible md:invisible md:w-0"
-          src="menu.svg"
-          alt=""
-          width="40"
-          height="32"></Image>
       </div>
 
       <div className="flex flex-col items-center mt-16 ">
@@ -781,37 +719,46 @@ export default function Home() {
       </div>
 
       <div className="footer-bg px-12 md:px-24 py-16 flex flex-wrap justify-items-center gap-3">
-        <div className="flex flex-[3] flex-col">
-          <Image src="/logo.svg" alt="" width="142" height="47"></Image>
+        <div className="flex flex-1 flex-col">
+          <Image src="/chance.jpeg" alt="" width="88" height="88"></Image>
           <div className="subtitle text-sm mt-6">
             Copyright © 2022 Chance Lottery.
           </div>
           <div className="subtitle text-sm mt-2">All rights reserved</div>
           <div className="flex gap-3 mt-4 flex-wrap">
-            <Image src="/telegram.svg" alt="" width="18" height="18"></Image>
-            <Image src="/discord.svg" alt="" width="18" height="18"></Image>
-            <Image src="/twitter.svg" alt="" width="18" height="18"></Image>
-            <Image src="/youtube.svg" alt="" width="18" height="18"></Image>
-            <Image src="/instagram.svg" alt="" width="18" height="18"></Image>
+            <a href="https://t.me/chancebsc" target="_blank">
+              <Image src="/telegram.svg" alt="" width="18" height="18"></Image>
+            </a>
+            <a href="https://discord.com/invite/chancebsc" target="_blank">
+              <Image src="/discord.svg" alt="" width="18" height="18"></Image>
+            </a>
+            <a href="https://twitter.com/chancebsc" target="_blank">
+              <Image src="/twitter.svg" alt="" width="18" height="18"></Image>
+            </a>
           </div>
         </div>
-        <div className="flex flex-1 flex-col ">
-          <div className="font-semibold text-lg">Product</div>
-          <div className="subtitle text-sm mt-6">Swap</div>
-          <div className="subtitle text-sm mt-2">Staking</div>
-          <div className="subtitle text-sm mt-2">Farming</div>
-          <div className="subtitle text-sm mt-2">Liquidity</div>
-          <div className="subtitle text-sm mt-2">NFT</div>
+        <div className="flex flex-1 flex-col gap-4 justify-center mt-12">
+          <a
+            className="font-semibold text-lg"
+            href="https://whitepaper.chancebsc.com"
+            target="_blank">
+            Whitepaper
+          </a>
+          <a
+            className="font-semibold text-lg"
+            href="https://pancakeswap.finance/swap?outputCurrency=0xb2f664c995B913D598A338C021311B5751dEde0A"
+            target="_blank">
+            Swap
+          </a>
+          <a
+            className="font-semibold text-lg"
+            href="https://bscscan.com/address/0xb2f664c995B913D598A338C021311B5751dEde0A"
+            target="_blank">
+            Contract Address
+          </a>
         </div>
-        <div className="flex flex-1 flex-col">
-          <div className="font-semibold text-lg">Support</div>
-          <div className="subtitle text-sm mt-6">FAQ</div>
-          <div className="subtitle text-sm mt-2">Discord</div>
-          <div className="subtitle text-sm mt-2">Tokenomics</div>
-          <div className="subtitle text-sm mt-2">Audits</div>
-          <div className="subtitle text-sm mt-2">Apply for Listing</div>
-        </div>
-        <div className="flex flex-[2] flex-col">
+
+        {/*  <div className="flex flex-[2] flex-col">
           <div className="font-semibold text-lg mb-6">Stay up to date</div>
           <div className="flex">
             <input
@@ -819,7 +766,7 @@ export default function Home() {
               className="bg-gray-600 rounded-lg px-2 placeholder-white outline-none py-1"
               placeholder="Your email address"></input>
           </div>
-        </div>
+        </div> */}
       </div>
     </main>
   );
