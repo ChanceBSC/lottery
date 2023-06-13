@@ -16,7 +16,10 @@ import {
   useContractRead,
   useContractWrite,
   useTokenBalance,
+  useSwitchChain,
+  useNetwork,
 } from "@thirdweb-dev/react";
+import { Goerli, BinanceTestnet, Binance } from "@thirdweb-dev/chains";
 
 export default function Home() {
   const [isMenuOpen, setMenu] = useState(false);
@@ -29,6 +32,9 @@ export default function Home() {
 
   const disconnect = useDisconnect();
   const isMismatched = useNetworkMismatch();
+
+  const switchChain = useSwitchChain();
+  const [, switchNetwork] = useNetwork();
 
   const connectionStatus = useConnectionStatus();
   const address = useAddress();
@@ -114,7 +120,7 @@ export default function Home() {
   console.log(
     "🚀 ~ file: page.js:85 ~ Home ~ lotteryDataDetails:",
     lotteryDataDetails
-  );  
+  );
 
   // const ticketNumberQuantity = Number(ethers.utils.formatEther(ticketPrice.toString())) * quantity
 
@@ -219,6 +225,16 @@ export default function Home() {
       setQuantity(event.target.value.slice(0, limit));
     }
   };
+
+  async function networkCheck() {
+    if (isMismatched) {
+      switchChain(BinanceTestnet.chainId);
+    }
+  }
+
+  useEffect(() => {
+    networkCheck();
+  }, [address, contract]);
 
   useEffect(() => {
     async function call() {
@@ -358,7 +374,7 @@ export default function Home() {
         <div className="text-4xl font-semibold">How to Play</div>
         <div className="w-8/12  md:w-5/12 text-xl mt-6 text-center subtitle">
           If the digits on your ticket match the winning numbers in the correct
-          order, you win a portion of the prize pool. Simple!
+          order, you win 80% of the prize pool. Simple!
         </div>
       </div>
 
@@ -369,8 +385,8 @@ export default function Home() {
           </div>
           <div className="text-xl font-semibold py-2.5">Buy Tickets</div>
           <div className="text-center subtitle">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua
+            After connecting MetaMask, simply click on buy and sign the message.
+            A ticket with 3 randomly generated digit will be given to you.
           </div>
         </div>
         <div className="flex flex-col items-center">
@@ -383,8 +399,8 @@ export default function Home() {
           </div>
           <div className="text-xl font-semibold py-2.5">Wait for the draw</div>
           <div className="text-center subtitle">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua
+            Once you have the ticket, all you have to do is wait for the winning
+            number to be announced.
           </div>
         </div>
         <div className="flex flex-col items-center">
@@ -397,8 +413,7 @@ export default function Home() {
           </div>
           <div className="text-xl font-semibold py-2.5">Check for prizes</div>
           <div className="text-center subtitle">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua
+            Winner is chosen on a daily basis and the draws will reset.
           </div>
         </div>
       </div>
@@ -461,6 +476,10 @@ export default function Home() {
                   </>
                 )}
               </div>
+              <br></br>
+              <span className="font-semibold text-l">
+                Tickets Available: {remainingTickets?.toNumber()}
+              </span>
               {/* <div className="mt-8 text-lg"> 20,554 stars</div> */}
               <input
                 type="number"
