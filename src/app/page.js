@@ -22,9 +22,10 @@ export default function Home() {
   const [isMenuOpen, setMenu] = useState(false);
   const [historyValue, setHistory] = useState(0);
   const [lotteryData, setLotteryData] = useState();
-  const [ticketNumberQuantity, setTicketNumberQuantity] = useState("");
+  // const [ticketNumberQuantity, setTicketNumberQuantity] = useState("");
 
   const [allowance, setAllowance] = useState();
+  const [chancePrice, setChancePrice] = useState("");
 
   const disconnect = useDisconnect();
   const isMismatched = useNetworkMismatch();
@@ -113,7 +114,10 @@ export default function Home() {
   console.log(
     "🚀 ~ file: page.js:85 ~ Home ~ lotteryDataDetails:",
     lotteryDataDetails
-  );
+  );  
+
+  // const ticketNumberQuantity = Number(ethers.utils.formatEther(ticketPrice.toString())) * quantity
+
   const { mutateAsync: BuyTickets } = useContractWrite(contract, "BuyTickets");
   const { mutateAsync: withdrawWinnings } = useContractWrite(
     contract,
@@ -175,7 +179,7 @@ export default function Home() {
         }
       }
     } catch (err) {
-      const error = err.Message;
+      const error = err.message;
       console.info("error error", error);
       toast.error(`Whoops something went wrong`, {
         id: notification,
@@ -243,8 +247,29 @@ export default function Home() {
     setUserTickets(noOfUserTickets);
   }, [tickets, address]);
 
+  useEffect(() => {
+    fetch(
+      "https://deep-index.moralis.io/api/v2/erc20/0xb2f664c995B913D598A338C021311B5751dEde0A/price?chain=bsc",
+      {
+        headers: {
+          "X-API-Key":
+            "cqHhtltaU6GF4MVFpkTdAm2aibChMQNyVhKLrprbx5qDJvHGV51f3LxDSvhII4AE",
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("dataFetch", data);
+        setChancePrice(data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
+
   const renderer = ({ hours, minutes, seconds, completed }) => {
-    if(completed) {
+    if (completed) {
       // return <span>00:00:00</span>
       return (
         <>
@@ -279,7 +304,7 @@ export default function Home() {
         </>
       );
     }
-  }
+  };
 
   return (
     <main className=" min-h-screen overflow-y-scroll w-full overflow-x-hidden relative">
@@ -386,7 +411,7 @@ export default function Home() {
         <button
           onClick={handleClick}
           disabled={!address}
-          className=" text-2xl my-24 px-14 py-2 rounded-3xl border-buy ">
+          className=" text-xl my-24 px-14 py-2 rounded-3xl border-buy ">
           {address ? "Buy Tickets" : "Connect Wallet to Buy Ticket"}
         </button>
       </div>
@@ -467,7 +492,17 @@ export default function Home() {
             <div className="flex justify-between ">
               <div className="text-xs md:text-xl">Ticket Price</div>
               <div className="text-xs md:text-xl">
-                {ticketNumberQuantity} {tokenSymbol}
+                {/* {ticketNumberQuantity} {tokenSymbol} */}
+                {ticketPrice &&
+                  Number(ethers.utils.formatEther(ticketPrice.toString())) *
+                    quantity}{" "}
+                {tokenSymbol} {"$"}
+                {ticketPrice &&
+                  (
+                    Number(ethers.utils.formatEther(ticketPrice.toString())) *
+                    quantity *
+                    chancePrice?.usdPriceFormatted
+                  ).toFixed(2)}
               </div>
             </div>
             <hr className="h-px my-4 border-0 bg-gray-700"></hr>
@@ -482,7 +517,8 @@ export default function Home() {
                 ) : (
                   <>
                     {pricePool &&
-                      ethers.utils.formatEther(pricePool.toString())}{" "}
+                      ethers.utils.formatEther(pricePool.toString()) *
+                        chancePrice?.usdPriceFormatted}{" "}
                     {""} {tokenSymbol}
                   </>
                 )}
@@ -516,9 +552,11 @@ export default function Home() {
                       userTickets == 10 ||
                       !address
                     }
-                    className=" text-2xl my-8 px-14 py-2 rounded-3xl border-buy">
+                    className=" text-l my-8 px-14 py-2 rounded-3xl border-buy">
                     {/* Buy {quantity} Tickets */}
-                    {address ? `Buy ${quantity} Tickets` : "Connect Wallet to Buy Ticket"}
+                    {address
+                      ? `Buy ${quantity} Tickets`
+                      : "Connect Wallet to Buy Ticket"}
                   </button>
                 </>
               )}
