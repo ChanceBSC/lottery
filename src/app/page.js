@@ -64,7 +64,7 @@ export default function Home() {
   const tokenName = tokenDetails?.name;
   const tokenDecimal = tokenDetails?.decimals;
 
-  const ticketUserCanBuy = 10 - userTickets;
+  const ticketUserCanBuy = 20 - userTickets;
 
   const { data: remainingTickets } = useContractRead(
     contract,
@@ -219,8 +219,8 @@ export default function Home() {
 
   const handleTicketNumber = (event) => {
     const limit = 2;
-    if (event.target.value > 10) {
-      setQuantity("10");
+    if (event.target.value > 20) {
+      setQuantity("20");
     } else {
       setQuantity(event.target.value.slice(0, limit));
     }
@@ -490,13 +490,13 @@ export default function Home() {
                 max={ticketUserCanBuy}
                 value={quantity}
                 onChange={handleTicketNumber}></input>
-              {userTickets == 10 ? (
+              {userTickets == 20 ? (
                 <>
                   <button
                     onClick={handleClick}
                     disabled
                     className=" text-2xl my-8 px-14 py-2 rounded-3xl border-buy">
-                    Can`t buy more 10 ticket
+                    Can`t buy more 20 ticket
                   </button>
                 </>
               ) : (
@@ -506,7 +506,7 @@ export default function Home() {
                     disabled={
                       expiration?.toString() < Date.now().toString() ||
                       remainingTickets?.toNumber() == 0 ||
-                      userTickets == 10 ||
+                      userTickets == 20 ||
                       !address
                     }
                     className=" text-l my-8 px-14 py-2 rounded-3xl border-buy">
