@@ -155,26 +155,6 @@ export default function Home() {
         allowance.toString()
       );
 
-      if (allowance.toString() === "0") {
-        try {
-          const approve = await tokenContract?.call(
-            "approve",
-            "0xfEf09C3BEF27aF73DFE361Ec77E0AA03B266EEbA"
-          );
-
-          toast.success("Spending allowance approved", {
-            id: notification,
-          });
-
-          console.log("approve", approve);
-        } catch (e) {
-          toast.error(`First Whoops something went wrong`, {
-            id: notification,
-          });
-          console.info("approve error", e);
-        }
-      }
-
       if (tokenBalanceBal < quantity * 10000000) {
         alert(`insufficient $CHANCE to buy ${quantity} tickets`);
         toast.error(`insufficient $CHANCE to buy ${quantity} tickets`, {
@@ -184,13 +164,29 @@ export default function Home() {
         try {
           // let buyQuantity = BigNumber.from(quantity);
           // console.log("buyQuantity", buyQuantity);
-          const buy = await contract?.call("BuyTickets", [quantity]);
-          toast.success(`${quantity} tickets purchased successfully`, {
-            id: notification,
-          });
-          console.log("buyTickets data", buy);
+          if (allowance.toString() === "0") {
+            const approve = await tokenContract?.call(
+              "approve",
+              "0xfEf09C3BEF27aF73DFE361Ec77E0AA03B266EEbA"
+            );
+            toast.success("Spending allowance approved", {
+              id: notification,
+            });
+          }
+          try {
+            const buy = await contract?.call("BuyTickets", [quantity]);
+            toast.success(`${quantity} tickets purchased successfully`, {
+              id: notification,
+            });
+            console.log("buyTickets data", buy);
+          } catch (e) {
+            toast.error(`Second Whoops something went wrong`, {
+              id: notification,
+            });
+            console.info("buyTicket error", e);
+          }
         } catch (e) {
-          toast.error(`Second Whoops something went wrong`, {
+          toast.error(`Third Whoops something went wrong`, {
             id: notification,
           });
           console.info("buyTicket error", e);
@@ -199,7 +195,7 @@ export default function Home() {
     } catch (err) {
       const error = err.message;
       console.info("error error", error);
-      toast.error(`Third Whoops something went wrong`, {
+      toast.error(`Fourth Whoops something went wrong`, {
         id: notification,
       });
       console.info("contract call failure", err);
@@ -325,7 +321,7 @@ export default function Home() {
             </div>
             <div className="flex ml-6">
               <div className="violet-txt">{seconds}</div>
-              <div>min</div>
+              <div>s</div>
             </div>
           </div>
           <div className="text-xl">Until the draw</div>
@@ -364,9 +360,7 @@ export default function Home() {
               </button>
             </>
           )} */}
-          <ConnectWallet
-            
-          />
+          <ConnectWallet />
         </div>
       </div>
 
