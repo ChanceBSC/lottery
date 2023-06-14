@@ -120,8 +120,8 @@ export default function Home() {
   const { data: lotteryCount } = useContractRead(contract, "lotteryCount");
   console.log("🚀 ~ file: page.js:90 ~ Home ~ lotteryCount:", lotteryCount);
 
-  const { data: IsWinner } = useContractRead(contract, "IsWinner", [address]);
-  console.log("🚀 ~ file: page.js:105 ~ Home ~ IsWinner:", IsWinner);
+  // const { data: IsWinner } = useContractRead(contract, "IsWinner", [address]);
+  // console.log("🚀 ~ file: page.js:105 ~ Home ~ IsWinner:", IsWinner);
 
   const { data: lotteryDataDetails } = useContractRead(
     contract,
@@ -167,7 +167,7 @@ export default function Home() {
 
           console.log("approve", approve);
         } catch (e) {
-          toast.error(`Whoops something went wrong`, {
+          toast.error(`First Whoops something went wrong`, {
             id: notification,
           });
           console.info("approve error", e);
@@ -189,7 +189,7 @@ export default function Home() {
           });
           console.log("buyTickets data", buy);
         } catch (e) {
-          toast.error(`Whoops something went wrong`, {
+          toast.error(`Second Whoops something went wrong`, {
             id: notification,
           });
           console.info("buyTicket error", e);
@@ -198,7 +198,7 @@ export default function Home() {
     } catch (err) {
       const error = err.message;
       console.info("error error", error);
-      toast.error(`Whoops something went wrong`, {
+      toast.error(`Third Whoops something went wrong`, {
         id: notification,
       });
       console.info("contract call failure", err);
@@ -390,7 +390,7 @@ export default function Home() {
       </div>
 
       <div className="flex flex-col md:flex-row gap-4 md:gap-0 justify-around px-12 md:px-24 mt-16 ">
-        <div className="flex flex-col items-center ">
+        <div className="flex flex-col items-center flex-1">
           <div className="w-10 h-10 connect-btn-bg rounded-3xl flex items-center justify-center">
             <Image src="buy_ticket.svg" alt="" width="20" height="20"></Image>
           </div>
@@ -400,7 +400,7 @@ export default function Home() {
             A ticket with 3 randomly generated digit will be given to you.
           </div>
         </div>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center flex-1">
           <div className="w-10 h-10 connect-btn-bg rounded-3xl flex items-center justify-center">
             <Image
               src="wait_for_draw.svg"
@@ -414,7 +414,7 @@ export default function Home() {
             number to be announced.
           </div>
         </div>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center flex">
           <div className="w-10 h-10 connect-btn-bg rounded-3xl flex items-center justify-center">
             <Image
               src="check_for_prizes.svg"
