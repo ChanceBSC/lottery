@@ -466,7 +466,7 @@ export default function Home() {
                   ).toFixed(2)} */}
               </div>
             </div>
-            <div className="flex justify-between ">
+            {/* <div className="flex justify-between ">
               <div className="text-xs md:text-xl"></div>
               <div className="text-xs md:text-sm">
                 {"$"}
@@ -475,7 +475,7 @@ export default function Home() {
                     quantity *
                     chancePrice?.usdPriceFormatted).toFixed(2)}{" "}
               </div>
-            </div>
+            </div> */}
             <hr className="h-px my-4 border-0 bg-gray-700"></hr>
             <div className=" flex flex-col items-center">
               <div className="font-semibold  text-4xl md:text-4xl">
@@ -494,12 +494,12 @@ export default function Home() {
                       ).toFixed(2)}{" "} */}
                     {pricePool && pricePool.toString()} {tokenSymbol}
                     <br></br>
-                    {"$"}
+                    {/* {"$"}
                     {pricePool &&
                       (
                         pricePool.toString() * chancePrice?.usdPriceFormatted
                       ).toFixed(2)}
-                    {""}
+                    {""} */}
                   </>
                 )}
               </div>
