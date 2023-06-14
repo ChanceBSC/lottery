@@ -53,8 +53,7 @@ export default function Home() {
   console.log("address", address);
 
   const { contract: tokenContract } = useContract(
-    "0xb2f664c995B913D598A338C021311B5751dEde0A",
-    tokenABI
+    "0xb2f664c995B913D598A338C021311B5751dEde0A"
   );
   console.log("contract", contract);
   console.log("token contract", tokenContract);
@@ -134,68 +133,83 @@ export default function Home() {
     lotteryDataDetails
   );
 
+  const { data: allow } = useContractRead(tokenContract, "allowance", [
+    address,
+    "0xfEf09C3BEF27aF73DFE361Ec77E0AA03B266EEbA",
+  ]);
+
   // const ticketNumberQuantity = Number(ethers.utils.formatEther(ticketPrice.toString())) * quantity
 
   const { mutateAsync: BuyTickets } = useContractWrite(contract, "BuyTickets");
+  const { mutateAsync: approve } = useContractWrite(tokenContract, "approve");
   const { mutateAsync: withdrawWinnings } = useContractWrite(
     contract,
     "WithdrawWinnings"
   );
 
+  const callApprove = async () => {
+    try {
+      const spendAmount = quantity * 10000000;
+      const approveData = await approve({
+        args: ["0xfEf09C3BEF27aF73DFE361Ec77E0AA03B266EEbA", spendAmount],
+      });
+    } catch (e) {
+      console.log("contract call failure", e);
+    }
+  };
+
   const handleClick = async () => {
     if (!ticketPrice) return;
     const notification = toast.loading("Buying your tickets");
     try {
-      const allowance = await tokenContract?.call("allowance", [
-        address,
-        "0xfEf09C3BEF27aF73DFE361Ec77E0AA03B266EEbA",
-      ]);
-      console.log(
-        "🚀 ~ file: page.js:112 ~ handleClick ~ allowance:",
-        allowance.toString()
-      );
-
       if (tokenBalanceBal < quantity * 10000000) {
-        alert(`insufficient $CHANCE to buy ${quantity} tickets`);
-        toast.error(`insufficient $CHANCE to buy ${quantity} tickets`, {
+        alert(`Insufficient $CHANCE to buy ${quantity} tickets`);
+        toast.error(`Insufficient $CHANCE to buy ${quantity} tickets`, {
           id: notification,
         });
       } else {
         try {
-          // let buyQuantity = BigNumber.from(quantity);
-          // console.log("buyQuantity", buyQuantity);
-          if (allowance.toString() === "0") {
-            const approve = await tokenContract?.call(
-              "approve",
-              "0xfEf09C3BEF27aF73DFE361Ec77E0AA03B266EEbA"
-            );
-            toast.success("Spending allowance approved", {
-              id: notification,
-            });
-          }
-          try {
-            const buy = await contract?.call("BuyTickets", [quantity]);
-            toast.success(`${quantity} tickets purchased successfully`, {
-              id: notification,
-            });
-            console.log("buyTickets data", buy);
-          } catch (e) {
-            toast.error(`Second Whoops something went wrong`, {
-              id: notification,
-            });
-            console.info("buyTicket error", e);
+          if (allow.toString() === "0" || allow.toString() < quantity * 10000000) {
+              try {
+                const spendAmount = quantity * 10000000;
+                const approveData = await approve({
+                  args: [
+                    "0xfEf09C3BEF27aF73DFE361Ec77E0AA03B266EEbA",
+                    spendAmount,
+                  ],
+                });
+                 console.log("🚀 ~ file: page.js:182 ~ handleClick ~ approveData:", approveData)
+                 toast.success(`approved successfully`, {
+                   id: notification,
+                 });
+              } catch (e) {
+                toast.error(`Whoops something went wrong approving`, {
+                  id: notification,
+                });
+                console.log("contract call failure", e);
+              }
+          } else {
+            try {
+              const buy = await contract?.call("BuyTickets", [quantity]);
+              toast.success(`${quantity} tickets purchased successfully`, {
+                id: notification,
+              });
+              console.log("buyTickets data", buy);
+            } catch (e) {
+              toast.error(`Whoops something went wrong while buying`, {
+                id: notification,
+              });
+              console.info("buyTicket error", e);
+            }
           }
         } catch (e) {
-          toast.error(`Third Whoops something went wrong`, {
-            id: notification,
-          });
-          console.info("buyTicket error", e);
+          console.info("🚀 ~ file: page.js:171 ~ handleClick ~ e:", e)
         }
       }
     } catch (err) {
       const error = err.message;
       console.info("error error", error);
-      toast.error(`Fourth Whoops something went wrong`, {
+      toast.error(`Whoops something went wrong`, {
         id: notification,
       });
       console.info("contract call failure", err);
@@ -412,7 +426,9 @@ export default function Home() {
           <div className="w-10 h-10 connect-btn-bg rounded-3xl flex items-center justify-center">
             <Image src="buy_ticket.svg" alt="" width="20" height="20"></Image>
           </div>
-          <div className="text-xl font-semibold py-2.5">Buy Tickets</div>
+          <div className="text-xl font-semibold py-2.5">
+            Buy Tickets
+          </div>
           <div className="text-center subtitle">
             After connecting MetaMask, simply click on buy and sign the message.
             A ticket with 3 randomly generated digit will be given to you.
