@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThirdwebProvider activeChain="binance-testnet">
+        <ThirdwebProvider activeChain="binance">
           {children}
           <Toaster></Toaster>
         </ThirdwebProvider>

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { ethers } from "ethers";
 import Countdown from "react-countdown";
+import tokenABI from "../../tokenABI/tokenABI.json"
 
 import {
   useDisconnect,
@@ -51,12 +52,22 @@ export default function Home() {
   console.log("address", address);
 
   const { contract: tokenContract } = useContract(
-    "0x9D45E3a41F714f655846AA145b27676e5258C113"
+    "0xb2f664c995B913D598A338C021311B5751dEde0A",
+    tokenABI
   );
   console.log("contract", contract);
   console.log("token contract", tokenContract);
 
+  const { contract: chanceContract } = useContract(
+    "0xb2f664c995B913D598A338C021311B5751dEde0A",
+    tokenABI
+  )
+  
+  console.log("🚀 ~ file: page.js:61 ~ Home ~ chanceContract:", chanceContract)
+  
   const { data: tokenDetails } = useTokenBalance(tokenContract, address);
+  const { data: chanceDetails } = useTokenBalance(chanceContract, address);
+  console.log("🚀 ~ file: page.js:69 ~ Home ~ chanceDetails:", chanceDetails)
   console.log("🚀 ~ file: page.js:49 ~ Home ~ tokenDetails:", tokenDetails);
 
   const tokenBalanceBal = tokenDetails?.displayValue;
@@ -228,7 +239,7 @@ export default function Home() {
 
   async function networkCheck() {
     if (isMismatched) {
-      switchChain(BinanceTestnet.chainId);
+      switchChain(Binance.chainId);
     }
   }
 
