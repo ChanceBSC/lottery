@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { ethers } from "ethers";
 import Countdown from "react-countdown";
-import tokenABI from "../../tokenABI/tokenABI.json"
+import tokenABI from "../../tokenABI/tokenABI.json";
 
 import {
   useDisconnect,
@@ -61,13 +61,13 @@ export default function Home() {
   const { contract: chanceContract } = useContract(
     "0xb2f664c995B913D598A338C021311B5751dEde0A",
     tokenABI
-  )
-  
-  console.log("🚀 ~ file: page.js:61 ~ Home ~ chanceContract:", chanceContract)
-  
+  );
+
+  console.log("🚀 ~ file: page.js:61 ~ Home ~ chanceContract:", chanceContract);
+
   const { data: tokenDetails } = useTokenBalance(tokenContract, address);
   const { data: chanceDetails } = useTokenBalance(chanceContract, address);
-  console.log("🚀 ~ file: page.js:69 ~ Home ~ chanceDetails:", chanceDetails)
+  console.log("🚀 ~ file: page.js:69 ~ Home ~ chanceDetails:", chanceDetails);
   console.log("🚀 ~ file: page.js:49 ~ Home ~ tokenDetails:", tokenDetails);
 
   const tokenBalanceBal = tokenDetails?.displayValue;
@@ -98,7 +98,10 @@ export default function Home() {
   );
 
   const { data: ticketPrice } = useContractRead(contract, "ticketPrice");
-  console.log("🚀 ~ file: page.js:71 ~ Home ~ ticketPrice:", ticketPrice);
+  console.log(
+    "🚀 ~ file: page.js:71 ~ Home ~ ticketPrice:",
+    ticketPrice
+  );
   const { data: ticketToken } = useContractRead(contract, "ticketToken");
   console.log("🚀 ~ file: page.js:73 ~ Home ~ ticketToken:", ticketToken);
   const { data: commissionTicket } = useContractRead(
@@ -147,18 +150,18 @@ export default function Home() {
     try {
       const allowance = await tokenContract?.call("allowance", [
         address,
-        "0xf96c1F07805272C1C05ab470520f383358aD3125",
+        "0xfEf09C3BEF27aF73DFE361Ec77E0AA03B266EEbA",
       ]);
       console.log(
         "🚀 ~ file: page.js:112 ~ handleClick ~ allowance:",
-        allowance
+        allowance.toString()
       );
 
       if (allowance.toString() === "0") {
         try {
           const approve = await tokenContract?.call(
             "approve",
-            "0xf96c1F07805272C1C05ab470520f383358aD3125"
+            "0xfEf09C3BEF27aF73DFE361Ec77E0AA03B266EEbA"
           );
 
           toast.success("Spending allowance approved", {
@@ -252,7 +255,7 @@ export default function Home() {
       try {
         const da = await tokenContract?.call("allowance", [
           address,
-          "0xf96c1F07805272C1C05ab470520f383358aD3125",
+          "0xfEf09C3BEF27aF73DFE361Ec77E0AA03B266EEbA",
         ]);
         console.log("🚀 ~ file: page.js:193 ~ call ~ da:", da);
         setAllowance(da);
