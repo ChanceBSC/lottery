@@ -98,10 +98,7 @@ export default function Home() {
   );
 
   const { data: ticketPrice } = useContractRead(contract, "ticketPrice");
-  console.log(
-    "🚀 ~ file: page.js:71 ~ Home ~ ticketPrice:",
-    ticketPrice
-  );
+  console.log("🚀 ~ file: page.js:71 ~ Home ~ ticketPrice:", ticketPrice);
   const { data: ticketToken } = useContractRead(contract, "ticketToken");
   console.log("🚀 ~ file: page.js:73 ~ Home ~ ticketToken:", ticketToken);
   const { data: commissionTicket } = useContractRead(
@@ -417,7 +414,7 @@ export default function Home() {
             number to be announced.
           </div>
         </div>
-        <div className="flex flex-col items-center flex">
+        <div className="flex flex-col items-center flex-1">
           <div className="w-10 h-10 connect-btn-bg rounded-3xl flex items-center justify-center">
             <Image
               src="check_for_prizes.svg"
@@ -460,33 +457,49 @@ export default function Home() {
               <div className="text-xs md:text-xl">Ticket Price</div>
               <div className="text-xs md:text-xl">
                 {/* {ticketNumberQuantity} {tokenSymbol} */}
-                {ticketPrice &&
-                  Number(ethers.utils.formatEther(ticketPrice.toString())) *
-                    quantity}{" "}
-                {tokenSymbol} {"$"}
-                {ticketPrice &&
+                {ticketPrice && ticketPrice.toString() * quantity} {tokenSymbol}
+                {/* {ticketPrice &&
                   (
                     Number(ethers.utils.formatEther(ticketPrice.toString())) *
                     quantity *
                     chancePrice?.usdPriceFormatted
-                  ).toFixed(2)}
+                  ).toFixed(2)} */}
+              </div>
+            </div>
+            <div className="flex justify-between ">
+              <div className="text-xs md:text-xl"></div>
+              <div className="text-xs md:text-sm">
+                {"$"}
+                {(ticketPrice &&
+                  ticketPrice.toString() *
+                    quantity *
+                    chancePrice?.usdPriceFormatted).toFixed(2)}{" "}
               </div>
             </div>
             <hr className="h-px my-4 border-0 bg-gray-700"></hr>
             <div className=" flex flex-col items-center">
-              <div className="font-semibold  text-4xl md:text-5xl">
+              <div className="font-semibold  text-4xl md:text-4xl">
                 Prize Pot
               </div>
-              <div className="font-semibold  mt-8 violet-txt text-4xl">
+              <div className="font-semibold items-center text-center mt-8 violet-txt text-4xl">
                 {" "}
                 {pricePool == 0 ? (
                   <>No Price Pot Yet</>
                 ) : (
                   <>
+                    {/* {pricePool &&
+                      Number(
+                        ethers.utils.formatEther(pricePool.toString()) *
+                          chancePrice?.usdPriceFormatted
+                      ).toFixed(2)}{" "} */}
+                    {pricePool && pricePool.toString()} {tokenSymbol}
+                    <br></br>
+                    {"$"}
                     {pricePool &&
-                      ethers.utils.formatEther(pricePool.toString()) *
-                        chancePrice?.usdPriceFormatted}{" "}
-                    {""} {tokenSymbol}
+                      (
+                        pricePool.toString() * chancePrice?.usdPriceFormatted
+                      ).toFixed(2)}
+                    {""}
                   </>
                 )}
               </div>
