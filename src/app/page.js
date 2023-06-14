@@ -18,6 +18,7 @@ import {
   useContractWrite,
   useTokenBalance,
   useSwitchChain,
+  ConnectWallet,
   useNetwork,
 } from "@thirdweb-dev/react";
 import { Goerli, BinanceTestnet, Binance } from "@thirdweb-dev/chains";
@@ -346,7 +347,7 @@ export default function Home() {
         <div></div>
         <div className="flex gap-4 ">
           <Image src="wallet-icon.svg" alt="" width="40" height="32"></Image>
-          {connectionStatus === "disconnected" ? (
+          {/* {connectionStatus === "disconnected" ? (
             <>
               <button
                 onClick={connectWithMetamask}
@@ -362,7 +363,10 @@ export default function Home() {
                 Disconnect
               </button>
             </>
-          )}
+          )} */}
+          <ConnectWallet
+            
+          />
         </div>
       </div>
 
@@ -371,8 +375,28 @@ export default function Home() {
           {" "}
           Chance Lottery{" "}
         </div>
-        <div className="mt-8 violet-txt text-4xl md:text-6xl"> $100,000</div>
-        <div className="mt-8">In Prizes!</div>
+        <div className="mt-8 violet-txt text-4xl md:text-6xl">
+          {pricePool == 0 ? (
+            <>No Price Pot Yet</>
+          ) : (
+            <>
+              {/* {pricePool &&
+                      Number(
+                        ethers.utils.formatEther(pricePool.toString()) *
+                          chancePrice?.usdPriceFormatted
+                      ).toFixed(2)}{" "} */}
+              {pricePool && pricePool.toString()} {tokenSymbol}
+              <br></br>
+              {/* {"$"}
+                    {pricePool &&
+                      (
+                        pricePool.toString() * chancePrice?.usdPriceFormatted
+                      ).toFixed(2)}
+                    {""} */}
+            </>
+          )}
+        </div>
+        {/* <div className="mt-8">In Prizes!</div> */}
         <button
           onClick={handleClick}
           disabled={!address}
