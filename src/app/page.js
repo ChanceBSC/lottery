@@ -393,7 +393,7 @@ export default function Home() {
                         ethers.utils.formatEther(pricePool.toString()) *
                           chancePrice?.usdPriceFormatted
                       ).toFixed(2)}{" "} */}
-              {pricePool && pricePool.toString()} {tokenSymbol}
+              {pricePool && Number(pricePool).toLocaleString()} {tokenSymbol}
               <br></br>
               {/* {"$"}
                     {pricePool &&
@@ -426,9 +426,7 @@ export default function Home() {
           <div className="w-10 h-10 connect-btn-bg rounded-3xl flex items-center justify-center">
             <Image src="buy_ticket.svg" alt="" width="20" height="20"></Image>
           </div>
-          <div className="text-xl font-semibold py-2.5">
-            Buy Tickets
-          </div>
+          <div className="text-xl font-semibold py-2.5">Buy Tickets</div>
           <div className="text-center subtitle">
             After connecting MetaMask, simply click on buy and sign the message.
             A ticket with 3 randomly generated digit will be given to you.
@@ -491,7 +489,7 @@ export default function Home() {
               <div className="text-xs md:text-xl">Ticket Price</div>
               <div className="text-xs md:text-xl">
                 {/* {ticketNumberQuantity} {tokenSymbol} */}
-                {ticketPrice && ticketPrice.toString() * quantity} {tokenSymbol}
+                {ticketPrice && Number(ticketPrice.toString() * quantity).toLocaleString()} {tokenSymbol}
                 {/* {ticketPrice &&
                   (
                     Number(ethers.utils.formatEther(ticketPrice.toString())) *
@@ -526,7 +524,7 @@ export default function Home() {
                         ethers.utils.formatEther(pricePool.toString()) *
                           chancePrice?.usdPriceFormatted
                       ).toFixed(2)}{" "} */}
-                    {pricePool && pricePool.toString()} {tokenSymbol}
+                    {pricePool && Number(pricePool).toLocaleString()} {tokenSymbol}
                     <br></br>
                     {/* {"$"}
                     {pricePool &&
