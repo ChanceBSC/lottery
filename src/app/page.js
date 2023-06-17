@@ -135,7 +135,7 @@ export default function Home() {
 
   const { data: allow } = useContractRead(tokenContract, "allowance", [
     address,
-    "0x7aFE8e851B52563E8940Ad06dacAC842659024c0",
+    "0x243fe49a12Ac366c9d93a604d084a43268c38b92",
   ]);
 
   // const ticketNumberQuantity = Number(ethers.utils.formatEther(ticketPrice.toString())) * quantity
@@ -151,7 +151,7 @@ export default function Home() {
     try {
       const spendAmount = quantity * 10000000;
       const approveData = await approve({
-        args: ["0x7aFE8e851B52563E8940Ad06dacAC842659024c0", spendAmount],
+        args: ["0x243fe49a12Ac366c9d93a604d084a43268c38b92", spendAmount],
       });
     } catch (e) {
       console.log("contract call failure", e);
@@ -174,7 +174,7 @@ export default function Home() {
                 const spendAmount = quantity * 10000000;
                 const approveData = await approve({
                   args: [
-                    "0x7aFE8e851B52563E8940Ad06dacAC842659024c0",
+                    "0x243fe49a12Ac366c9d93a604d084a43268c38b92",
                     spendAmount,
                   ],
                 });
@@ -263,7 +263,7 @@ export default function Home() {
       try {
         const da = await tokenContract?.call("allowance", [
           address,
-          "0x7aFE8e851B52563E8940Ad06dacAC842659024c0",
+          "0x243fe49a12Ac366c9d93a604d084a43268c38b92",
         ]);
         console.log("🚀 ~ file: page.js:193 ~ call ~ da:", da);
         setAllowance(da);
