@@ -169,25 +169,31 @@ export default function Home() {
         });
       } else {
         try {
-          if (allow.toString() === "0" || allow.toString() < quantity * 10000000) {
-              try {
-                const spendAmount = quantity * 10000000;
-                const approveData = await approve({
-                  args: [
-                    "0x243fe49a12Ac366c9d93a604d084a43268c38b92",
-                    spendAmount,
-                  ],
-                });
-                 console.log("🚀 ~ file: page.js:182 ~ handleClick ~ approveData:", approveData)
-                 toast.success(`approved successfully`, {
-                   id: notification,
-                 });
-              } catch (e) {
-                toast.error(`Whoops something went wrong approving`, {
-                  id: notification,
-                });
-                console.log("contract call failure", e);
-              }
+          if (
+            allow.toString() === "0" ||
+            allow.toString() < quantity * 10000000
+          ) {
+            try {
+              const spendAmount = quantity * 10000000;
+              const approveData = await approve({
+                args: [
+                  "0x243fe49a12Ac366c9d93a604d084a43268c38b92",
+                  spendAmount,
+                ],
+              });
+              console.log(
+                "🚀 ~ file: page.js:182 ~ handleClick ~ approveData:",
+                approveData
+              );
+              toast.success(`approved successfully`, {
+                id: notification,
+              });
+            } catch (e) {
+              toast.error(`Whoops something went wrong approving`, {
+                id: notification,
+              });
+              console.log("contract call failure", e);
+            }
           } else {
             try {
               const buy = await contract?.call("BuyTickets", [quantity]);
@@ -203,7 +209,7 @@ export default function Home() {
             }
           }
         } catch (e) {
-          console.info("🚀 ~ file: page.js:171 ~ handleClick ~ e:", e)
+          console.info("🚀 ~ file: page.js:171 ~ handleClick ~ e:", e);
         }
       }
     } catch (err) {
@@ -407,7 +413,12 @@ export default function Home() {
         {/* <div className="mt-8">In Prizes!</div> */}
         <button
           onClick={handleClick}
-          disabled={!address}
+          disabled={
+            expiration?.toString() < Date.now().toString() ||
+            remainingTickets?.toNumber() == 0 ||
+            userTickets == 20 ||
+            !address
+          }
           className=" text-xl my-24 px-14 py-2 rounded-3xl border-buy ">
           {address ? "Buy Tickets" : "Connect Wallet to Buy Ticket"}
         </button>
@@ -489,7 +500,11 @@ export default function Home() {
               <div className="text-xs md:text-xl">Ticket Price</div>
               <div className="text-xs md:text-xl">
                 {/* {ticketNumberQuantity} {tokenSymbol} */}
-                {ticketPrice && Number(ticketPrice.toString() * quantity).toLocaleString()} {tokenSymbol}
+                {ticketPrice &&
+                  Number(
+                    ticketPrice.toString() * quantity
+                  ).toLocaleString()}{" "}
+                {tokenSymbol}
                 {/* {ticketPrice &&
                   (
                     Number(ethers.utils.formatEther(ticketPrice.toString())) *
@@ -524,7 +539,8 @@ export default function Home() {
                         ethers.utils.formatEther(pricePool.toString()) *
                           chancePrice?.usdPriceFormatted
                       ).toFixed(2)}{" "} */}
-                    {pricePool && Number(pricePool).toLocaleString()} {tokenSymbol}
+                    {pricePool && Number(pricePool).toLocaleString()}{" "}
+                    {tokenSymbol}
                     <br></br>
                     {/* {"$"}
                     {pricePool &&
@@ -714,7 +730,9 @@ export default function Home() {
                         </button>
                       </>
                     ) : (
-                      <button className=" w-fit mx-auto px-6 py-2 rounded-3xl border-buy mt-2">
+                      <button
+                        disabled
+                        className=" w-fit mx-auto px-6 py-2 rounded-3xl border-buy mt-2">
                         You were not the winner, try again
                       </button>
                     )}
