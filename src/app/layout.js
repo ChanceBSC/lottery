@@ -4,6 +4,8 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import { Toaster } from "react-hot-toast";
 import { Metadata } from "next";
+import Head from "next/head";
+
 
 import { ThirdwebProvider } from "@thirdweb-dev/react";
 
@@ -19,6 +21,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <ThirdwebProvider activeChain="binance">
+          <Head>
+            <title>Chance Lottery</title>
+          </Head>
           {children}
           <Toaster></Toaster>
         </ThirdwebProvider>

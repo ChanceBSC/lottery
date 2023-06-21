@@ -126,7 +126,7 @@ export default function Home() {
   const { data: lotteryDataDetails } = useContractRead(
     contract,
     "lotteryDataDetails",
-    [4]
+    [1]
   );
   console.log(
     "🚀 ~ file: page.js:85 ~ Home ~ lotteryDataDetails:",
@@ -259,6 +259,19 @@ export default function Home() {
       switchChain(Binance.chainId);
     }
   }
+
+  async function data() {
+    let id = lotteryId.toString() - 1;
+    const data = await contract?.call("lotteryDataDetails", [id]);
+    setLotteryData(data);
+    console.log("🚀 ~ file: page.js:130 ~ data ~ data:", data);
+  }
+
+  useEffect(() => {
+    if (lotteryId) {
+      data();
+    }
+  }, [address, lotteryId]);
 
   useEffect(() => {
     networkCheck();
@@ -695,7 +708,7 @@ export default function Home() {
             ) : (
               <div></div>
             )} */}
-            {lotteryDataDetails && lotteryDataDetails ? (
+            {lotteryData && lotteryData ? (
               <div className="flex flex-col">
                 <div className="flex justify-between items-center gap-4">
                   <div className="flex items-center">
@@ -712,16 +725,17 @@ export default function Home() {
                   <div> Winning Amount </div>
                   <div>
                     {" "}
-                    {ethers.utils.formatEther(
-                      lotteryDataDetails.lastWinnerAmount.toString()
-                    )}{" "}
+                    {/* {ethers.utils.formatEther(
+                      lotteryData.lastWinnerAmount.toString(), tokenDecimal
+                    )}{" "} */}
+                    {Number(lotteryData.lastWinnerAmount.toString()).toLocaleString()} {" "}
                     {tokenSymbol}
-                    {/* {lotteryDataDetails.lastWinnerAmount.toString()}{" "} */}
+                    {/* {lotteryData.lastWinnerAmount.toString()}{" "} */}
                   </div>
                 </div>
                 {address ? (
                   <>
-                    {lotteryDataDetails.lastWinner === address ? (
+                    {lotteryData.lastWinner === address ? (
                       <>
                         <button
                           onClick={onWithdrawWinnings}
