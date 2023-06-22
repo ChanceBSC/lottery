@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { ethers } from "ethers";
 import Countdown from "react-countdown";
 import tokenABI from "../../tokenABI/tokenABI.json";
+import Marquee from "react-fast-marquee";
 
 import {
   useDisconnect,
@@ -53,13 +54,13 @@ export default function Home() {
   console.log("address", address);
 
   const { contract: tokenContract } = useContract(
-    "0xb2f664c995B913D598A338C021311B5751dEde0A"
+    process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS
   );
   console.log("contract", contract);
   console.log("token contract", tokenContract);
 
   const { contract: chanceContract } = useContract(
-    "0xb2f664c995B913D598A338C021311B5751dEde0A",
+    process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS,
     tokenABI
   );
 
@@ -135,7 +136,7 @@ export default function Home() {
 
   const { data: allow } = useContractRead(tokenContract, "allowance", [
     address,
-    "0x243fe49a12Ac366c9d93a604d084a43268c38b92",
+    process.env.NEXT_PUBLIC_LOTTERY_CONTRACT_ADDRESS,
   ]);
 
   // const ticketNumberQuantity = Number(ethers.utils.formatEther(ticketPrice.toString())) * quantity
@@ -151,7 +152,7 @@ export default function Home() {
     try {
       const spendAmount = quantity * 10000000;
       const approveData = await approve({
-        args: ["0x243fe49a12Ac366c9d93a604d084a43268c38b92", spendAmount],
+        args: [process.env.NEXT_PUBLIC_LOTTERY_CONTRACT_ADDRESS, spendAmount],
       });
     } catch (e) {
       console.log("contract call failure", e);
@@ -177,7 +178,7 @@ export default function Home() {
               const spendAmount = quantity * 10000000;
               const approveData = await approve({
                 args: [
-                  "0x243fe49a12Ac366c9d93a604d084a43268c38b92",
+                  process.env.NEXT_PUBLIC_LOTTERY_CONTRACT_ADDRESS,
                   spendAmount,
                 ],
               });
@@ -282,7 +283,7 @@ export default function Home() {
       try {
         const da = await tokenContract?.call("allowance", [
           address,
-          "0x243fe49a12Ac366c9d93a604d084a43268c38b92",
+          process.env.NEXT_PUBLIC_LOTTERY_CONTRACT_ADDRESS,
         ]);
         console.log("🚀 ~ file: page.js:193 ~ call ~ da:", da);
         setAllowance(da);
@@ -609,6 +610,29 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <br />
+      <br />
+
+      <Marquee className="bg-[#000000] p-5 mb-5" gradient={false} speed={100}>
+        {lotteryData && lotteryData ? (
+          <div className="flex space-x-2 mx-18">
+            <h4 className="text-white font-bold">
+              Last Winner: {lotteryData.lastWinner?.substring(0, 5)}...
+              {lotteryData.lastWinner?.substring(
+                lotteryData.lastWinner.length,
+                lotteryData.lastWinner.length - 5
+              )}
+            </h4>
+            <h4 className="text-white font-bold">
+              Last Winnings:{" "}
+              {Number(lotteryData.lastWinnerAmount.toString()).toLocaleString()}{" "}
+              {tokenSymbol}
+            </h4>
+          </div>
+        ) : (
+          <></>
+        )}
+      </Marquee>
 
       <div className="flex flex-col items-center mt-16">
         <div className="font-semibold text-4xl md:text-6xl">
@@ -728,7 +752,9 @@ export default function Home() {
                     {/* {ethers.utils.formatEther(
                       lotteryData.lastWinnerAmount.toString(), tokenDecimal
                     )}{" "} */}
-                    {Number(lotteryData.lastWinnerAmount.toString()).toLocaleString()} {" "}
+                    {Number(
+                      lotteryData.lastWinnerAmount.toString()
+                    ).toLocaleString()}{" "}
                     {tokenSymbol}
                     {/* {lotteryData.lastWinnerAmount.toString()}{" "} */}
                   </div>
@@ -752,7 +778,11 @@ export default function Home() {
                     )}
                   </>
                 ) : (
-                  "Please Connect your wallet"
+                  <button
+                    disabled
+                    className=" w-fit mx-auto px-6 py-2 rounded-3xl border-buy mt-2">
+                    Please Connect your wallet
+                  </button>
                 )}
 
                 <hr className="h-px my-4 border-0 bg-gray-700"></hr>
