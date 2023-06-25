@@ -33,6 +33,12 @@ export default function Home() {
   const [allowance, setAllowance] = useState();
   const [chancePrice, setChancePrice] = useState("");
 
+  const [formattedPrice, setFormattedPrice] = useState();
+  console.log(
+    "🚀 ~ file: page.js:300 ~ Home ~ formattedPrice:",
+    formattedPrice
+  );
+
   const disconnect = useDisconnect();
   const isMismatched = useNetworkMismatch();
 
@@ -99,7 +105,12 @@ export default function Home() {
   );
 
   const { data: ticketPrice } = useContractRead(contract, "ticketPrice");
-  console.log("🚀 ~ file: page.js:71 ~ Home ~ ticketPrice:", ticketPrice);
+  if (ticketPrice) {
+    console.log(
+      "🚀 ~ file: page.js:71 ~ Home ~ ticketPrice:",
+      ticketPrice.toString()
+    );
+  }
   const { data: ticketToken } = useContractRead(contract, "ticketToken");
   console.log("🚀 ~ file: page.js:73 ~ Home ~ ticketToken:", ticketToken);
   const { data: commissionTicket } = useContractRead(
@@ -297,13 +308,18 @@ export default function Home() {
   useEffect(() => {
     if (!tickets) return;
 
+    if (!ticketPrice) return;
+    const FP = ethers.utils.formatEther(ticketPrice, tokenDecimal);
+
+    setFormattedPrice(FP);
+
     const totalTickets = tickets;
     const noOfUserTickets = totalTickets.reduce(
       (total, ticketAddress) => (ticketAddress === address ? total + 1 : total),
       0
     );
     setUserTickets(noOfUserTickets);
-  }, [tickets, address]);
+  }, [tickets, address, quantity, ticketPrice]);
 
   useEffect(() => {
     fetch(
@@ -434,7 +450,13 @@ export default function Home() {
             !address
           }
           className=" text-xl my-24 px-14 py-2 rounded-3xl border-buy ">
-          {address ? "Buy Tickets" : "Connect Wallet to Buy Ticket"}
+          {/* {expiration?.toString() < Date.now().toString() ? (
+            <>Ticket Sale CLOSED</>
+          ) : (
+              <> */}
+                {address ? "Buy Tickets" : "Connect Wallet to Buy Ticket"}
+              {/* </>
+          )} */}
         </button>
       </div>
 
@@ -515,16 +537,8 @@ export default function Home() {
               <div className="text-xs md:text-xl">
                 {/* {ticketNumberQuantity} {tokenSymbol} */}
                 {ticketPrice &&
-                  Number(
-                    ticketPrice.toString() * quantity
-                  ).toLocaleString()}{" "}
+                  Number(formattedPrice * quantity).toLocaleString()}{" "}
                 {tokenSymbol}
-                {/* {ticketPrice &&
-                  (
-                    Number(ethers.utils.formatEther(ticketPrice.toString())) *
-                    quantity *
-                    chancePrice?.usdPriceFormatted
-                  ).toFixed(2)} */}
               </div>
             </div>
             {/* <div className="flex justify-between ">
@@ -548,11 +562,6 @@ export default function Home() {
                   <>No Price Pot Yet</>
                 ) : (
                   <>
-                    {/* {pricePool &&
-                      Number(
-                        ethers.utils.formatEther(pricePool.toString()) *
-                          chancePrice?.usdPriceFormatted
-                      ).toFixed(2)}{" "} */}
                     {pricePool && Number(pricePool).toLocaleString()}{" "}
                     {tokenSymbol}
                     <br></br>
@@ -574,7 +583,7 @@ export default function Home() {
                 type="number"
                 disabled={!address}
                 className="bg-gray-600 rounded-lg px-2 placeholder-white outline-none py-1 mt-8"
-                // placeholder="Input ticket count"
+                placeholder="Input number of ticket"
                 min={1}
                 max={ticketUserCanBuy}
                 value={quantity}
@@ -599,10 +608,15 @@ export default function Home() {
                       !address
                     }
                     className=" text-l my-8 px-14 py-2 rounded-3xl border-buy">
-                    {/* Buy {quantity} Tickets */}
-                    {address
-                      ? `Buy ${quantity} Tickets`
-                      : "Connect Wallet to Buy Ticket"}
+                    {expiration?.toString() < Date.now().toString() ? (
+                      <>Ticket Sale CLOSED</>
+                    ) : (
+                      <>
+                        {address
+                          ? `Buy ${quantity} Tickets`
+                          : "Connect Wallet to Buy Ticket"}
+                      </>
+                    )}
                   </button>
                 </>
               )}
