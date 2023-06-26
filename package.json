@@ -1,22 +1,20 @@
 {
-  "name": "qroniswap",
+  "name": "chancev2",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export": "next export",
+    "deploy": "next build && next export && npx thirdweb@latest upload out"
   },
   "dependencies": {
     "@moralisweb3/common-evm-utils": "^2.22.2",
-    "@thirdweb-dev/react": "^3.0.1",
-    "@thirdweb-dev/sdk": "^3.0.1",
-    "@types/react-dom": "18.2.4",
-    "axios": "^1.4.0",
-    "eslint": "8.42.0",
-    "eslint-config-next": "13.4.4",
-    "ethers": "^5.7.2",
+    "@thirdweb-dev/react": "^3",
+    "@thirdweb-dev/sdk": "^3",
+    "ethers": "^5",
     "moralis": "^2.22.2",
     "next": "13.4.4",
     "react": "18.2.0",
@@ -29,6 +27,8 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
+    "eslint": "8.11.0",
+    "eslint-config-next": "^13",
     "postcss": "^8.4.24",
     "tailwindcss": "^3.3.2"
   }

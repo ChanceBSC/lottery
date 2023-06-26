@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { ethers } from "ethers";
 import Countdown from "react-countdown";
-import tokenABI from "../../tokenABI/tokenABI.json";
+import tokenABI from "../tokenABI/tokenABI.json";
 import Marquee from "react-fast-marquee";
 
 import {
@@ -21,6 +21,7 @@ import {
   useSwitchChain,
   ConnectWallet,
   useNetwork,
+  useMetadata,
 } from "@thirdweb-dev/react";
 import { Goerli, BinanceTestnet, Binance } from "@thirdweb-dev/chains";
 
@@ -59,38 +60,32 @@ export default function Home() {
 
   console.log("address", address);
 
-    const { contract: tokenContract } = useContract(
-      process.env.NEXT_PUBLIC_MAIN_TOKEN_CONTRACT_ADDRESS,
-      "token"
-    );
-    console.log("contract", contract);
-    console.log("token contract", tokenContract);
+  const { contract: tokenContract } = useContract(
+    process.env.NEXT_PUBLIC_MAIN_TOKEN_CONTRACT_ADDRESS,
+    "token"
+  );
+  console.log("contract", contract);
+  console.log("token contract", tokenContract);
 
-    const { data: tokenMetadata } = useMetadata(tokenContract);
-    console.log(
-      "🚀 ~ file: index.js:72 ~ Home ~ tokenMetadata:",
-      tokenMetadata
-    );
+  const { data: tokenMetadata } = useMetadata(tokenContract);
+  console.log("🚀 ~ file: index.js:72 ~ Home ~ tokenMetadata:", tokenMetadata);
 
-    const { contract: chanceContract } = useContract(
-      process.env.NEXT_PUBLIC_MAIN_TOKEN_CONTRACT_ADDRESS,
-      tokenABI
-    );
+  const { contract: chanceContract } = useContract(
+    process.env.NEXT_PUBLIC_MAIN_TOKEN_CONTRACT_ADDRESS,
+    tokenABI
+  );
 
-    console.log(
-      "🚀 ~ file: page.js:61 ~ Home ~ chanceContract:",
-      chanceContract
-    );
+  console.log("🚀 ~ file: page.js:61 ~ Home ~ chanceContract:", chanceContract);
 
-    const { data: tokenDetails } = useTokenBalance(tokenContract, address);
-    const { data: chanceDetails } = useTokenBalance(chanceContract, address);
-    console.log("🚀 ~ file: page.js:69 ~ Home ~ chanceDetails:", chanceDetails);
-    console.log("🚀 ~ file: page.js:49 ~ Home ~ tokenDetails:", tokenDetails);
+  const { data: tokenDetails } = useTokenBalance(tokenContract, address);
+  const { data: chanceDetails } = useTokenBalance(chanceContract, address);
+  console.log("🚀 ~ file: page.js:69 ~ Home ~ chanceDetails:", chanceDetails);
+  console.log("🚀 ~ file: page.js:49 ~ Home ~ tokenDetails:", tokenDetails);
 
-    const tokenBalanceBal = tokenDetails?.displayValue;
-    const tokenSymbol = tokenMetadata?.symbol;
-    const tokenName = tokenMetadata?.name;
-    const tokenDecimal = tokenDetails?.decimals;
+  const tokenBalanceBal = tokenDetails?.displayValue;
+  const tokenSymbol = tokenMetadata?.symbol;
+  const tokenName = tokenMetadata?.name;
+  const tokenDecimal = tokenDetails?.decimals;
 
   const ticketUserCanBuy = 20 - userTickets;
 
