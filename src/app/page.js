@@ -132,8 +132,8 @@ export default function Home() {
   const { data: lotteryCount } = useContractRead(contract, "lotteryCount");
   console.log("🚀 ~ file: page.js:90 ~ Home ~ lotteryCount:", lotteryCount);
 
-  // const { data: IsWinner } = useContractRead(contract, "IsWinner", [address]);
-  // console.log("🚀 ~ file: page.js:105 ~ Home ~ IsWinner:", IsWinner);
+  const { data: hasWinnerClaimed } = useContractRead(contract, "hasWinnerClaimed", address)
+  console.log("🚀 ~ file: page.js:136 ~ Home ~ hasWinnerClaimed:", hasWinnerClaimed)
 
   const { data: lotteryDataDetails } = useContractRead(
     contract,
@@ -283,7 +283,7 @@ export default function Home() {
     if (lotteryId) {
       data();
     }
-  }, [address, lotteryId]);
+  }, [address, lotteryId, contract]);
 
   useEffect(() => {
     networkCheck();
@@ -454,8 +454,8 @@ export default function Home() {
             <>Ticket Sale CLOSED</>
           ) : (
               <> */}
-                {address ? "Buy Tickets" : "Connect Wallet to Buy Ticket"}
-              {/* </>
+          {address ? "Buy Tickets" : "Connect Wallet to Buy Ticket"}
+          {/* </>
           )} */}
         </button>
       </div>
@@ -777,11 +777,23 @@ export default function Home() {
                   <>
                     {lotteryData.lastWinner === address ? (
                       <>
-                        <button
-                          onClick={onWithdrawWinnings}
-                          className=" w-fit mx-auto px-6 py-2 rounded-3xl border-buy mt-2">
-                          Claim Prizes
-                        </button>
+                        {hasWinnerClaimed && hasWinnerClaimed === false ? (
+                          <>
+                            <button
+                              onClick={onWithdrawWinnings}
+                              className=" w-fit mx-auto px-6 py-2 rounded-3xl border-buy mt-2">
+                              Claim Prizes
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              disabled
+                              className=" w-fit mx-auto px-6 py-2 rounded-3xl border-buy mt-2">
+                              Winnings Claimed 😜
+                            </button>
+                          </>
+                        )}
                       </>
                     ) : (
                       <button
