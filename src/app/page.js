@@ -132,8 +132,15 @@ export default function Home() {
   const { data: lotteryCount } = useContractRead(contract, "lotteryCount");
   console.log("🚀 ~ file: page.js:90 ~ Home ~ lotteryCount:", lotteryCount);
 
-  const { data: hasWinnerClaimed } = useContractRead(contract, "hasWinnerClaimed", address)
-  console.log("🚀 ~ file: page.js:136 ~ Home ~ hasWinnerClaimed:", hasWinnerClaimed)
+  const { data: hasWinnerClaimed } = useContractRead(
+    contract,
+    "hasWinnerClaimed",
+    address
+  );
+  console.log(
+    "🚀 ~ file: page.js:136 ~ Home ~ hasWinnerClaimed:",
+    hasWinnerClaimed
+  );
 
   const { data: lotteryDataDetails } = useContractRead(
     contract,
@@ -160,13 +167,23 @@ export default function Home() {
   );
 
   const callApprove = async () => {
+    const notification = toast.loading(`Approving`);
     try {
       const spendAmount = quantity * 10000000;
       const approveData = await approve({
         args: [process.env.NEXT_PUBLIC_LOTTERY_CONTRACT_ADDRESS, spendAmount],
       });
+      console.log(
+        "🚀 ~ file: page.js:182 ~ handleClick ~ approveData:",
+        approveData
+      );
+      toast.success(`approved successfully`, {
+        id: notification,
+      });
     } catch (e) {
-      console.log("contract call failure", e);
+      toast.error(`Whoops ${e.reason}`, {
+        id: notification,
+      });
     }
   };
 
@@ -181,47 +198,16 @@ export default function Home() {
         });
       } else {
         try {
-          if (
-            allow.toString() === "0" ||
-            allow.toString() < quantity * 10000000
-          ) {
-            try {
-              const spendAmount = quantity * 10000000;
-              const approveData = await approve({
-                args: [
-                  process.env.NEXT_PUBLIC_LOTTERY_CONTRACT_ADDRESS,
-                  spendAmount,
-                ],
-              });
-              console.log(
-                "🚀 ~ file: page.js:182 ~ handleClick ~ approveData:",
-                approveData
-              );
-              toast.success(`approved successfully`, {
-                id: notification,
-              });
-            } catch (e) {
-              toast.error(`Whoops something went wrong approving`, {
-                id: notification,
-              });
-              console.log("contract call failure", e);
-            }
-          } else {
-            try {
-              const buy = await contract?.call("BuyTickets", [quantity]);
-              toast.success(`${quantity} tickets purchased successfully`, {
-                id: notification,
-              });
-              console.log("buyTickets data", buy);
-            } catch (e) {
-              toast.error(`Whoops something went wrong while buying`, {
-                id: notification,
-              });
-              console.info("buyTicket error", e);
-            }
-          }
+          const buy = await contract?.call("BuyTickets", [quantity]);
+          toast.success(`${quantity} tickets purchased successfully`, {
+            id: notification,
+          });
+          console.log("buyTickets data", buy);
         } catch (e) {
-          console.info("🚀 ~ file: page.js:171 ~ handleClick ~ e:", e);
+          toast.error(`Whoops ${e.reason}`, {
+            id: notification,
+          });
+          console.info("buyTicket error", e);
         }
       }
     } catch (err) {
@@ -441,23 +427,37 @@ export default function Home() {
           )}
         </div>
         {/* <div className="mt-8">In Prizes!</div> */}
-        <button
-          onClick={handleClick}
-          disabled={
-            expiration?.toString() < Date.now().toString() ||
-            remainingTickets?.toNumber() == 0 ||
-            userTickets == 20 ||
-            !address
-          }
-          className=" text-xl my-24 px-14 py-2 rounded-3xl border-buy ">
-          {/* {expiration?.toString() < Date.now().toString() ? (
+        {(allow && allow.toString() === "0") ||
+        (allow && allow.toString() < quantity * 10000000) ? (
+          <>
+            <button
+              onClick={callApprove}
+              disabled={!address}
+              className=" text-xl my-24 px-14 py-2 rounded-3xl border-buy ">
+              Approve CHANCE
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={handleClick}
+              disabled={
+                expiration?.toString() < Date.now().toString() ||
+                remainingTickets?.toNumber() == 0 ||
+                userTickets == 20 ||
+                !address
+              }
+              className=" text-xl my-24 px-14 py-2 rounded-3xl border-buy ">
+              {/* {expiration?.toString() < Date.now().toString() ? (
             <>Ticket Sale CLOSED</>
           ) : (
               <> */}
-          {address ? "Buy Tickets" : "Connect Wallet to Buy Ticket"}
-          {/* </>
+              {address ? "Buy Tickets" : "Connect Wallet to Buy Ticket"}
+              {/* </>
           )} */}
-        </button>
+            </button>
+          </>
+        )}
       </div>
 
       <div className="flex flex-col items-center">
@@ -588,36 +588,50 @@ export default function Home() {
                 max={ticketUserCanBuy}
                 value={quantity}
                 onChange={handleTicketNumber}></input>
-              {userTickets == 20 ? (
+              {(allow && allow.toString() === "0") ||
+              (allow && allow.toString() < quantity * 10000000) ? (
                 <>
                   <button
-                    onClick={handleClick}
-                    disabled
-                    className=" text-2xl my-8 px-14 py-2 rounded-3xl border-buy">
-                    Can`t buy more 20 ticket
+                    onClick={callApprove}
+                    disabled={!address}
+                    className=" text-xl my-24 px-14 py-2 rounded-3xl border-buy ">
+                    Approve CHANCE
                   </button>
                 </>
               ) : (
                 <>
-                  <button
-                    onClick={handleClick}
-                    disabled={
-                      expiration?.toString() < Date.now().toString() ||
-                      remainingTickets?.toNumber() == 0 ||
-                      userTickets == 20 ||
-                      !address
-                    }
-                    className=" text-l my-8 px-14 py-2 rounded-3xl border-buy">
-                    {expiration?.toString() < Date.now().toString() ? (
-                      <>Ticket Sale CLOSED</>
-                    ) : (
-                      <>
-                        {address
-                          ? `Buy ${quantity} Tickets`
-                          : "Connect Wallet to Buy Ticket"}
-                      </>
-                    )}
-                  </button>
+                  {userTickets == 20 ? (
+                    <>
+                      <button
+                        onClick={handleClick}
+                        disabled
+                        className=" text-2xl my-8 px-14 py-2 rounded-3xl border-buy">
+                        Can`t buy more 20 ticket
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={handleClick}
+                        disabled={
+                          expiration?.toString() < Date.now().toString() ||
+                          remainingTickets?.toNumber() == 0 ||
+                          userTickets == 20 ||
+                          !address
+                        }
+                        className=" text-l my-8 px-14 py-2 rounded-3xl border-buy">
+                        {expiration?.toString() < Date.now().toString() ? (
+                          <>Ticket Sale CLOSED</>
+                        ) : (
+                          <>
+                            {address
+                              ? `Buy ${quantity} Tickets`
+                              : "Connect Wallet to Buy Ticket"}
+                          </>
+                        )}
+                      </button>
+                    </>
+                  )}
                 </>
               )}
             </div>
