@@ -446,7 +446,7 @@ export default function Home() {
               onClick={callApprove}
               disabled={!address}
               className=" text-xl my-24 px-14 py-2 rounded-3xl border-buy ">
-              First approve {tokenSymbol} in other to buy tickets
+              First approve {tokenSymbol} in order to buy tickets
             </button>
           </>
         ) : (
@@ -487,8 +487,8 @@ export default function Home() {
           </div>
           <div className="text-xl font-semibold py-2.5">Buy Tickets</div>
           <div className="text-center subtitle">
-            After connecting MetaMask, simply click on buy and sign the message.
-            A ticket with 3 randomly generated digit will be given to you.
+            After connecting MetaMask, set and approve your custom spending cap
+            to Max. Then click on `Buy Tickets` and sign again.
           </div>
         </div>
         <div className="flex flex-col items-center flex-1">
@@ -515,7 +515,8 @@ export default function Home() {
           </div>
           <div className="text-xl font-semibold py-2.5">Check for prizes</div>
           <div className="text-center subtitle">
-            Winner is chosen on a daily basis and the draws will reset.
+            Winning ticket will be drawn on a daily basis and the draws will
+            reset. Remember to check and claim your prize below.
           </div>
         </div>
       </div>
@@ -608,7 +609,7 @@ export default function Home() {
                     onClick={callApprove}
                     disabled={!address}
                     className=" text-lg px-14 py-2 rounded-3xl border-buy ">
-                    First approve {tokenSymbol} in other to buy tickets
+                    First approve {tokenSymbol} in order to buy tickets
                   </button>
                   <br />
                   <br />
