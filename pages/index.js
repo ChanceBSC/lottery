@@ -161,11 +161,13 @@ export default function Home() {
     address,
     process.env.NEXT_PUBLIC_LOTTERY_CONTRACT_ADDRESS,
   ]);
+  console.log("🚀 ~ file: index.js:161 ~ Home ~ allow:", allow);
 
   // const ticketNumberQuantity = Number(ethers.utils.formatEther(ticketPrice.toString())) * quantity
 
   const { mutateAsync: BuyTickets } = useContractWrite(contract, "BuyTickets");
   const { mutateAsync: approve } = useContractWrite(tokenContract, "approve");
+  console.log("🚀 ~ file: index.js:169 ~ Home ~ approve:", approve);
   const { mutateAsync: withdrawWinnings } = useContractWrite(
     contract,
     "WithdrawWinnings"
@@ -197,22 +199,26 @@ export default function Home() {
     const notification = toast.loading("Buying your tickets");
     try {
       if (tokenBalanceBal < quantity * 10000000) {
-        alert(`Insufficient $CHANCE to buy ${quantity} tickets`);
-        toast.error(`Insufficient $CHANCE to buy ${quantity} tickets`, {
+        alert(`Insufficient ${tokenSymbol} to buy ${quantity} tickets`);
+        toast.error(`Insufficient ${tokenSymbol} to buy ${quantity} tickets`, {
           id: notification,
         });
       } else {
-        try {
-          const buy = await contract?.call("BuyTickets", [quantity]);
-          toast.success(`${quantity} tickets purchased successfully`, {
-            id: notification,
-          });
-          console.log("buyTickets data", buy);
-        } catch (e) {
-          toast.error(`Whoops ${e.reason}`, {
-            id: notification,
-          });
-          console.info("buyTicket error", e);
+        if (allow.toString() < quantity * 10000000) {
+          callApprove();
+        } else {
+          try {
+            const buy = await contract?.call("BuyTickets", [quantity]);
+            toast.success(`${quantity} tickets purchased successfully`, {
+              id: notification,
+            });
+            console.log("buyTickets data", buy);
+          } catch (e) {
+            toast.error(`Whoops ${e.reason}`, {
+              id: notification,
+            });
+            console.info("buyTicket error", e);
+          }
         }
       }
     } catch (err) {
@@ -279,6 +285,8 @@ export default function Home() {
   useEffect(() => {
     networkCheck();
   }, [address, contract]);
+
+  useEffect(() => {}, [tokenContract, contract]);
 
   useEffect(() => {
     async function call() {
@@ -432,14 +440,13 @@ export default function Home() {
           )}
         </div>
         {/* <div className="mt-8">In Prizes!</div> */}
-        {(allow && allow.toString() === "0") ||
-        (allow && allow.toString() < quantity * 10000000) ? (
+        {allow && allow.toString() === "0" ? (
           <>
             <button
               onClick={callApprove}
               disabled={!address}
               className=" text-xl my-24 px-14 py-2 rounded-3xl border-buy ">
-              Approve CHANCE
+              First approve {tokenSymbol} in other to buy tickets
             </button>
           </>
         ) : (
@@ -542,7 +549,7 @@ export default function Home() {
               <div className="text-xs md:text-xl">
                 {/* {ticketNumberQuantity} {tokenSymbol} */}
                 {ticketPrice &&
-                  Number(formattedPrice * quantity).toLocaleString()}{" "}
+                  Number(ticketPrice * quantity).toLocaleString()}{" "}
                 {tokenSymbol}
               </div>
             </div>
@@ -593,15 +600,18 @@ export default function Home() {
                 max={ticketUserCanBuy}
                 value={quantity}
                 onChange={handleTicketNumber}></input>
-              {(allow && allow.toString() === "0") ||
-              (allow && allow.toString() < quantity * 10000000) ? (
+              {allow && allow.toString() === "0" ? (
                 <>
+                  <br />
+                  <br />
                   <button
                     onClick={callApprove}
                     disabled={!address}
-                    className=" text-xl my-24 px-14 py-2 rounded-3xl border-buy ">
-                    Approve CHANCE
+                    className=" text-lg px-14 py-2 rounded-3xl border-buy ">
+                    First approve {tokenSymbol} in other to buy tickets
                   </button>
+                  <br />
+                  <br />
                 </>
               ) : (
                 <>
@@ -610,7 +620,7 @@ export default function Home() {
                       <button
                         onClick={handleClick}
                         disabled
-                        className=" text-2xl my-8 px-14 py-2 rounded-3xl border-buy">
+                        className=" text-lg my-8 px-14 py-2 rounded-3xl border-buy">
                         Can`t buy more 20 ticket
                       </button>
                     </>
