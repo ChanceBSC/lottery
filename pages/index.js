@@ -810,17 +810,17 @@ export default function Home() {
                         {hasWinnerClaimed && hasWinnerClaimed === "false" ? (
                           <>
                             <button
-                              onClick={onWithdrawWinnings}
+                              disabled
                               className=" w-fit mx-auto px-6 py-2 rounded-3xl border-buy mt-2">
-                              Claim Prizes
+                              Winnings Claimed 😜
                             </button>
                           </>
                         ) : (
                           <>
                             <button
-                              disabled
+                              onClick={onWithdrawWinnings}
                               className=" w-fit mx-auto px-6 py-2 rounded-3xl border-buy mt-2">
-                              Winnings Claimed 😜
+                              Claim Prizes
                             </button>
                           </>
                         )}
