@@ -139,8 +139,8 @@ export default function Home() {
 
   const { data: hasWinnerClaimed } = useContractRead(
     contract,
-    "hasWinnerClaimed",
-    address
+    "hasClaimed",
+    [address]
   );
   console.log(
     "🚀 ~ file: page.js:136 ~ Home ~ hasWinnerClaimed:",
