@@ -137,11 +137,9 @@ export default function Home() {
   const { data: lotteryCount } = useContractRead(contract, "lotteryCount");
   console.log("🚀 ~ file: page.js:90 ~ Home ~ lotteryCount:", lotteryCount);
 
-  const { data: hasWinnerClaimed } = useContractRead(
-    contract,
-    "hasClaimed",
-    [address]
-  );
+  const { data: hasWinnerClaimed } = useContractRead(contract, "hasClaimed", [
+    address,
+  ]);
   console.log(
     "🚀 ~ file: page.js:136 ~ Home ~ hasWinnerClaimed:",
     hasWinnerClaimed
@@ -303,6 +301,19 @@ export default function Home() {
     }
     call();
   }, [address]);
+
+  const [hasClaim, setHasClaim] = useState("");
+  console.log("🚀 ~ file: index.js:308 ~ Home ~ hasClaim:", hasClaim);
+
+  useEffect(() => {
+    if (hasWinnerClaimed) {
+      console.log("bitch true");
+      setHasClaim("0")
+    } else {
+      console.log("bitch false");
+      setHasClaim("1")
+    }
+  }, [address, contract]);
 
   useEffect(() => {
     if (!tickets) return;
@@ -488,7 +499,7 @@ export default function Home() {
           <div className="text-xl font-semibold py-2.5">Buy Tickets</div>
           <div className="text-center subtitle">
             After connecting MetaMask, set and approve your custom spending cap
-            to Max. <br/> Then click on `Buy Tickets` and sign again.
+            to Max. <br /> Then click on `Buy Tickets` and sign again.
           </div>
         </div>
         <div className="flex flex-col items-center flex-1">
@@ -780,7 +791,12 @@ export default function Home() {
               <div className="flex flex-col">
                 <div className="flex justify-between items-center gap-4">
                   <div className="flex items-center">
-                    <div>Round</div>
+                    <div>
+                      {/* {hasClaim && hasClaim === "1"
+                        ? "Round"
+                        : "not bitch"} */}
+                        Round
+                    </div>
                     <div
                       className="
                         ml-3 w-10 h-10 connect-btn-bg rounded-3xl flex items-center justify-center">
@@ -807,20 +823,20 @@ export default function Home() {
                   <>
                     {lotteryData.lastWinner === address ? (
                       <>
-                        {hasWinnerClaimed && hasWinnerClaimed === "false" ? (
-                          <>
-                            <button
-                              disabled
-                              className=" w-fit mx-auto px-6 py-2 rounded-3xl border-buy mt-2">
-                              Winnings Claimed 😜
-                            </button>
-                          </>
-                        ) : (
+                        {hasWinnerClaimed && hasWinnerClaimed === "1" ? (
                           <>
                             <button
                               onClick={onWithdrawWinnings}
                               className=" w-fit mx-auto px-6 py-2 rounded-3xl border-buy mt-2">
                               Claim Prizes
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              disabled
+                              className=" w-fit mx-auto px-6 py-2 rounded-3xl border-buy mt-2">
+                              Winnings Claimed 😜
                             </button>
                           </>
                         )}
