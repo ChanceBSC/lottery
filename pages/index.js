@@ -488,7 +488,7 @@ export default function Home() {
           <div className="text-xl font-semibold py-2.5">Buy Tickets</div>
           <div className="text-center subtitle">
             After connecting MetaMask, set and approve your custom spending cap
-            to Max. Then click on `Buy Tickets` and sign again.
+            to Max. <br/> Then click on `Buy Tickets` and sign again.
           </div>
         </div>
         <div className="flex flex-col items-center flex-1">
@@ -918,7 +918,7 @@ export default function Home() {
         <div className="flex flex-1 flex-col">
           <Image src="/chance.jpeg" alt="" width="88" height="88"></Image>
           <div className="subtitle text-sm mt-6">
-            Copyright © 2022 Chance Lottery.
+            Copyright © 2023 Chance Lottery.
           </div>
           <div className="subtitle text-sm mt-2">All rights reserved</div>
           <div className="flex gap-3 mt-4 flex-wrap">
