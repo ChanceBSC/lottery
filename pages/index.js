@@ -807,7 +807,7 @@ export default function Home() {
                   <>
                     {lotteryData.lastWinner === address ? (
                       <>
-                        {hasWinnerClaimed && hasWinnerClaimed === false ? (
+                        {hasWinnerClaimed && hasWinnerClaimed === "false" ? (
                           <>
                             <button
                               onClick={onWithdrawWinnings}
