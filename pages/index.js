@@ -245,7 +245,7 @@ export default function Home() {
         id: notification,
       });
     } catch (err) {
-      toast.error("Whoops something went wrong!", {
+      toast.error(`Whoops something went wrong! ${err.reason}`, {
         id: notification,
       });
       console.error("contract call failure", err);
