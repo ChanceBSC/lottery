@@ -182,7 +182,7 @@ export default function Home() {
         "🚀 ~ file: page.js:182 ~ handleClick ~ approveData:",
         approveData
       );
-      toast.success(`approved successfully`, {
+      toast.success(`Approval Successfully`, {
         id: notification,
       });
     } catch (e) {
@@ -301,19 +301,6 @@ export default function Home() {
     }
     call();
   }, [address]);
-
-  const [hasClaim, setHasClaim] = useState("");
-  console.log("🚀 ~ file: index.js:308 ~ Home ~ hasClaim:", hasClaim);
-
-  useEffect(() => {
-    if (hasWinnerClaimed) {
-      console.log("bitch true");
-      setHasClaim("0")
-    } else {
-      console.log("bitch false");
-      setHasClaim("1")
-    }
-  }, [address, contract]);
 
   useEffect(() => {
     if (!tickets) return;
@@ -795,7 +782,7 @@ export default function Home() {
                       {/* {hasClaim && hasClaim === "1"
                         ? "Round"
                         : "not bitch"} */}
-                        Round
+                      Round
                     </div>
                     <div
                       className="
@@ -823,29 +810,18 @@ export default function Home() {
                   <>
                     {lotteryData.lastWinner === address ? (
                       <>
-                        {hasWinnerClaimed && hasWinnerClaimed === "1" ? (
-                          <>
-                            <button
-                              onClick={onWithdrawWinnings}
-                              className=" w-fit mx-auto px-6 py-2 rounded-3xl border-buy mt-2">
-                              Claim Prizes
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            <button
-                              disabled
-                              className=" w-fit mx-auto px-6 py-2 rounded-3xl border-buy mt-2">
-                              Winnings Claimed 😜
-                            </button>
-                          </>
-                        )}
+                        <button
+                          onClick={onWithdrawWinnings}
+                          disabled={hasWinnerClaimed}
+                          className=" w-fit mx-auto px-6 py-2 rounded-3xl border-buy mt-2">
+                          {hasWinnerClaimed ? "Winnings has been claimed 😜" : "Claim Winnings"}
+                        </button>
                       </>
                     ) : (
                       <button
                         disabled
                         className=" w-fit mx-auto px-6 py-2 rounded-3xl border-buy mt-2">
-                        You were not the winner, try again
+                        You were not the winner, try again 🥲
                       </button>
                     )}
                   </>
