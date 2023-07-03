@@ -35,10 +35,10 @@ export default function Home() {
   const [chancePrice, setChancePrice] = useState("");
 
   const [formattedPrice, setFormattedPrice] = useState();
-  console.log(
-    "🚀 ~ file: page.js:300 ~ Home ~ formattedPrice:",
-    formattedPrice
-  );
+  // console.log(
+  //   "🚀 ~ file: page.js:300 ~ Home ~ formattedPrice:",
+  //   formattedPrice
+  // );
 
   const disconnect = useDisconnect();
   const isMismatched = useNetworkMismatch();
@@ -52,35 +52,35 @@ export default function Home() {
 
   const [userTickets, setUserTickets] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  console.log("🚀 ~ file: page.js:36 ~ Home ~ quantity:", quantity);
+  // console.log("🚀 ~ file: page.js:36 ~ Home ~ quantity:", quantity);
 
   const { contract, isLoading } = useContract(
     process.env.NEXT_PUBLIC_LOTTERY_CONTRACT_ADDRESS
   );
 
-  console.log("address", address);
+  // console.log("address", address);
 
   const { contract: tokenContract } = useContract(
     process.env.NEXT_PUBLIC_MAIN_TOKEN_CONTRACT_ADDRESS,
     "token"
   );
-  console.log("contract", contract);
-  console.log("token contract", tokenContract);
+  // console.log("contract", contract);
+  // console.log("token contract", tokenContract);
 
   const { data: tokenMetadata } = useMetadata(tokenContract);
-  console.log("🚀 ~ file: index.js:72 ~ Home ~ tokenMetadata:", tokenMetadata);
+  // console.log("🚀 ~ file: index.js:72 ~ Home ~ tokenMetadata:", tokenMetadata);
 
   const { contract: chanceContract } = useContract(
     process.env.NEXT_PUBLIC_MAIN_TOKEN_CONTRACT_ADDRESS,
     tokenABI
   );
 
-  console.log("🚀 ~ file: page.js:61 ~ Home ~ chanceContract:", chanceContract);
+  // console.log("🚀 ~ file: page.js:61 ~ Home ~ chanceContract:", chanceContract);
 
   const { data: tokenDetails } = useTokenBalance(tokenContract, address);
   const { data: chanceDetails } = useTokenBalance(chanceContract, address);
-  console.log("🚀 ~ file: page.js:69 ~ Home ~ chanceDetails:", chanceDetails);
-  console.log("🚀 ~ file: page.js:49 ~ Home ~ tokenDetails:", tokenDetails);
+  // console.log("🚀 ~ file: page.js:69 ~ Home ~ chanceDetails:", chanceDetails);
+  // console.log("🚀 ~ file: page.js:49 ~ Home ~ tokenDetails:", tokenDetails);
 
   const tokenBalanceBal = tokenDetails?.displayValue;
   const tokenSymbol = tokenMetadata?.symbol;
@@ -93,79 +93,79 @@ export default function Home() {
     contract,
     "RemainingTickets"
   );
-  console.log(
-    "🚀 ~ file: page.js:58 ~ Home ~ remainingTickets:",
-    remainingTickets
-  );
+  // console.log(
+  //   "🚀 ~ file: page.js:58 ~ Home ~ remainingTickets:",
+  //   remainingTickets
+  // );
 
   const { data: pricePool } = useContractRead(contract, "CurrentWinningReward");
-  console.log("🚀 ~ file: page.js:63 ~ Home ~ pricePool:", pricePool);
+  // console.log("🚀 ~ file: page.js:63 ~ Home ~ pricePool:", pricePool);
   const { data: checkWinningsAmount } = useContractRead(
     contract,
     "checkWinningsAmount"
   );
-  console.log(
-    "🚀 ~ file: page.js:65 ~ Home ~ checkWinningsAmount:",
-    checkWinningsAmount
-  );
+  // console.log(
+  //   "🚀 ~ file: page.js:65 ~ Home ~ checkWinningsAmount:",
+  //   checkWinningsAmount
+  // );
 
   const { data: ticketPrice } = useContractRead(contract, "ticketPrice");
-  if (ticketPrice) {
-    console.log(
-      "🚀 ~ file: page.js:71 ~ Home ~ ticketPrice:",
-      ticketPrice.toString()
-    );
-  }
+  // if (ticketPrice) {
+  //   console.log(
+  //     "🚀 ~ file: page.js:71 ~ Home ~ ticketPrice:",
+  //     ticketPrice.toString()
+  //   );
+  // }
   const { data: ticketToken } = useContractRead(contract, "ticketToken");
-  console.log("🚀 ~ file: page.js:73 ~ Home ~ ticketToken:", ticketToken);
+  // console.log("🚀 ~ file: page.js:73 ~ Home ~ ticketToken:", ticketToken);
   const { data: commissionTicket } = useContractRead(
     contract,
     "commissionPercent"
   );
-  console.log(
-    "🚀 ~ file: page.js:75 ~ Home ~ commissionTicket:",
-    commissionTicket
-  );
+  // console.log(
+  //   "🚀 ~ file: page.js:75 ~ Home ~ commissionTicket:",
+  //   commissionTicket
+  // );
 
   const { data: expiration } = useContractRead(contract, "expiration");
-  console.log("🚀 ~ file: page.js:80 ~ Home ~ expiration:", expiration);
+  // console.log("🚀 ~ file: page.js:80 ~ Home ~ expiration:", expiration);
   const { data: tickets } = useContractRead(contract, "getTickets");
-  console.log("🚀 ~ file: page.js:82 ~ Home ~ tickets:", tickets);
+  // console.log("🚀 ~ file: page.js:82 ~ Home ~ tickets:", tickets);
 
   const { data: lotteryId } = useContractRead(contract, "lotteryId");
-  console.log("🚀 ~ file: page.js:88 ~ Home ~ lotteryId:", lotteryId);
+  // console.log("🚀 ~ file: page.js:88 ~ Home ~ lotteryId:", lotteryId);
   const { data: lotteryCount } = useContractRead(contract, "lotteryCount");
-  console.log("🚀 ~ file: page.js:90 ~ Home ~ lotteryCount:", lotteryCount);
+  // console.log("🚀 ~ file: page.js:90 ~ Home ~ lotteryCount:", lotteryCount);
 
   const { data: hasWinnerClaimed } = useContractRead(contract, "hasClaimed", [
     address,
   ]);
-  console.log(
-    "🚀 ~ file: page.js:136 ~ Home ~ hasWinnerClaimed:",
-    hasWinnerClaimed
-  );
+  // console.log(
+  //   "🚀 ~ file: page.js:136 ~ Home ~ hasWinnerClaimed:",
+  //   hasWinnerClaimed
+  // );
 
   const { data: lotteryDataDetails } = useContractRead(
     contract,
     "lotteryDataDetails",
     [1]
   );
-  console.log(
-    "🚀 ~ file: page.js:85 ~ Home ~ lotteryDataDetails:",
-    lotteryDataDetails
-  );
+  // console.log(
+  //   "🚀 ~ file: page.js:85 ~ Home ~ lotteryDataDetails:",
+  //   lotteryDataDetails
+  // );
 
   const { data: allow } = useContractRead(tokenContract, "allowance", [
     address,
     process.env.NEXT_PUBLIC_LOTTERY_CONTRACT_ADDRESS,
   ]);
-  console.log("🚀 ~ file: index.js:161 ~ Home ~ allow:", allow);
+  // console.log("🚀 ~ file: index.js:161 ~ Home ~ allow:", allow);
 
   // const ticketNumberQuantity = Number(ethers.utils.formatEther(ticketPrice.toString())) * quantity
 
   const { mutateAsync: BuyTickets } = useContractWrite(contract, "BuyTickets");
   const { mutateAsync: approve } = useContractWrite(tokenContract, "approve");
-  console.log("🚀 ~ file: index.js:169 ~ Home ~ approve:", approve);
+  // console.log("🚀 ~ file: index.js:169 ~ Home ~ approve:", approve);
   const { mutateAsync: withdrawWinnings } = useContractWrite(
     contract,
     "WithdrawWinnings"
@@ -178,10 +178,10 @@ export default function Home() {
       const approveData = await approve({
         args: [process.env.NEXT_PUBLIC_LOTTERY_CONTRACT_ADDRESS, spendAmount],
       });
-      console.log(
-        "🚀 ~ file: page.js:182 ~ handleClick ~ approveData:",
-        approveData
-      );
+      // console.log(
+      //   "🚀 ~ file: page.js:182 ~ handleClick ~ approveData:",
+      //   approveData
+      // );
       toast.success(`Approval Successfully`, {
         id: notification,
       });
@@ -210,29 +210,29 @@ export default function Home() {
             toast.success(`${quantity} tickets purchased successfully`, {
               id: notification,
             });
-            console.log("buyTickets data", buy);
+            // console.log("buyTickets data", buy);
           } catch (e) {
             toast.error(`Whoops ${e.reason}`, {
               id: notification,
             });
-            console.info("buyTicket error", e);
+            // console.info("buyTicket error", e);
           }
         }
       }
     } catch (err) {
       const error = err.message;
-      console.info("error error", error);
+      // console.info("error error", error);
       toast.error(`Whoops something went wrong`, {
         id: notification,
       });
-      console.info("contract call failure", err);
+      // console.info("contract call failure", err);
     }
 
     // try {
     //   const data = await BuyTickets({ args: [1] });
-    //   console.info("contract call successs", data);
+      console.info("contract call successs", data);
     // } catch (err) {
-    //   console.error("contract call failure", err);
+      console.error("contract call failure", err);
     // }
   };
 
@@ -248,7 +248,7 @@ export default function Home() {
       toast.error(`Whoops something went wrong! ${err.reason}`, {
         id: notification,
       });
-      console.error("contract call failure", err);
+      // console.error("contract call failure", err);
     }
   };
 
@@ -271,7 +271,7 @@ export default function Home() {
     let id = lotteryId.toString() - 1;
     const data = await contract?.call("lotteryDataDetails", [id]);
     setLotteryData(data);
-    console.log("🚀 ~ file: page.js:130 ~ data ~ data:", data);
+    // console.log("🚀 ~ file: page.js:130 ~ data ~ data:", data);
   }
 
   useEffect(() => {
@@ -293,10 +293,10 @@ export default function Home() {
           address,
           process.env.NEXT_PUBLIC_LOTTERY_CONTRACT_ADDRESS,
         ]);
-        console.log("🚀 ~ file: page.js:193 ~ call ~ da:", da);
+        // console.log("🚀 ~ file: page.js:193 ~ call ~ da:", da);
         setAllowance(da);
       } catch (e) {
-        console.error(e);
+        // console.error(e);
       }
     }
     call();
@@ -331,11 +331,11 @@ export default function Home() {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log("dataFetch", data);
+        // console.log("dataFetch", data);
         setChancePrice(data);
       })
       .catch((err) => {
-        console.log(err.message);
+        // console.log(err.message);
       });
   }, []);
 
@@ -814,7 +814,9 @@ export default function Home() {
                           onClick={onWithdrawWinnings}
                           disabled={hasWinnerClaimed}
                           className=" w-fit mx-auto px-6 py-2 rounded-3xl border-buy mt-2">
-                          {hasWinnerClaimed ? "Winnings has been claimed 😜" : "Claim Winnings"}
+                          {hasWinnerClaimed
+                            ? "Winnings has been claimed 😜"
+                            : "Claim Winnings"}
                         </button>
                       </>
                     ) : (
