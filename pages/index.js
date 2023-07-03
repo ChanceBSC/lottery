@@ -473,8 +473,9 @@ export default function Home() {
       <div className="flex flex-col items-center">
         <div className="text-4xl font-semibold">How to Play</div>
         <div className="w-8/12  md:w-5/12 text-xl mt-6 text-center subtitle">
-          If the digits on your ticket match the winning numbers in the correct
-          order, you win 80% of the prize pool. Simple!
+          Simple click on Buy Tickets and if your ticket was picked, you win 80%
+          of the prizepool. The more tickets you bought, the better the odds.
+          Simple!
         </div>
       </div>
 
