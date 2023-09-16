@@ -909,56 +909,6 @@ export default function Home() {
           height={350}></Image> */}
       </div>
 
-      <div className="footer-bg px-12 md:px-24 py-16 flex flex-wrap justify-items-center gap-3">
-        <div className="flex flex-1 flex-col">
-          <Image src="/chance.jpeg" alt="" width="88" height="88"></Image>
-          <div className="subtitle text-sm mt-6">
-            Copyright © 2023 Chance Lottery.
-          </div>
-          <div className="subtitle text-sm mt-2">All rights reserved</div>
-          <div className="flex gap-3 mt-4 flex-wrap">
-            <a href="https://t.me/chancebsc" target="_blank">
-              <Image src="/telegram.svg" alt="" width="18" height="18"></Image>
-            </a>
-            <a href="https://discord.com/invite/chancebsc" target="_blank">
-              <Image src="/discord.svg" alt="" width="18" height="18"></Image>
-            </a>
-            <a href="https://twitter.com/chancebsc" target="_blank">
-              <Image src="/twitter.svg" alt="" width="18" height="18"></Image>
-            </a>
-          </div>
-        </div>
-        <div className="flex flex-1 flex-col gap-4 justify-center mt-12">
-          <a
-            className="font-semibold text-lg"
-            href="https://whitepaper.chancebsc.com"
-            target="_blank">
-            Whitepaper
-          </a>
-          <a
-            className="font-semibold text-lg"
-            href="https://pancakeswap.finance/swap?outputCurrency=0xb2f664c995B913D598A338C021311B5751dEde0A"
-            target="_blank">
-            Swap
-          </a>
-          <a
-            className="font-semibold text-lg"
-            href="https://bscscan.com/address/0xb2f664c995B913D598A338C021311B5751dEde0A"
-            target="_blank">
-            Contract Address
-          </a>
-        </div>
-
-        {/*  <div className="flex flex-[2] flex-col">
-          <div className="font-semibold text-lg mb-6">Stay up to date</div>
-          <div className="flex">
-            <input
-              type="text"
-              className="bg-gray-600 rounded-lg px-2 placeholder-white outline-none py-1"
-              placeholder="Your email address"></input>
-          </div>
-        </div> */}
-      </div>
     </main>
   );
 }
